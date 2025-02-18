@@ -83,8 +83,8 @@ export default function Page({loaderData}: Route.ComponentProps) {
       <input type="hidden" name="redirectTo" value={redirectTo}/>
       <Stack>
 
-        <TextInput name="login" label="Логин" defaultValue={'admin'}/>
-        <TextInput type="password" name="password" label="Пароль" defaultValue={'admin'}/>
+        <TextInput name="login" label="Логин"/>
+        <TextInput type="password" name="password" label="Пароль"/>
         <Button type="submit">Войти</Button>
       </Stack>
     </fetcher.Form>
