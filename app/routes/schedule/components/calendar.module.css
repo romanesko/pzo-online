@@ -1,0 +1,23 @@
+.slotWrapper{
+    color:black;
+    text-decoration: none;
+}
+
+.slot {
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.1;
+}
+
+.slot.used {
+    background: lightblue;
+    opacity: 1;
+    border-radius: 5px;
+    /*border: 1px solid black;*/
+}
+
+.slot:hover {
+    background: lightgreen;
+    opacity: 1;
+
+}

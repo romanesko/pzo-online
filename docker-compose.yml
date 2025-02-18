@@ -1,0 +1,13 @@
+services:
+  pzo-online-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3999:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      SESSION_SECRET: ${SESSION_SECRET}
