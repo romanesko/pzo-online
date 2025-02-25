@@ -108,7 +108,7 @@ async function generatePDF({pages}: { pages: string[] }) {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     executablePath: "/usr/bin/chromium",
-    timeout: 30000, // 30 seconds
+    timeout: 10000, // 10 seconds
   });
 
   console.log('browser ready')
