@@ -102,7 +102,9 @@ export async function action({request, params}: Route.ActionArgs) {
 
 
 async function generatePDF({pages}: { pages: string[] }) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
 
 
