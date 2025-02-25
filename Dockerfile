@@ -44,4 +44,4 @@ COPY --from=build-env /app/build /app/build
 RUN npm install puppeteer && \
     npx puppeteer browsers install chrome
 
-CMD ["DEBUG=puppeteer:*", "npm", "run", "start"]
+CMD ["npm", "run", "start"]
