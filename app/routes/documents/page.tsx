@@ -106,9 +106,16 @@ async function generatePDF({pages}: { pages: string[] }) {
 
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox','--disable-dev-shm-usage'],
-    executablePath: "/usr/bin/chromium",
-    timeout: 10000, // 10 seconds
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--disable-software-rasterizer',
+      '--disable-features=Vulkan',
+      '--use-gl=swiftshader'
+    ],
+    executablePath: '/usr/bin/chromium',  // Ensure Puppeteer uses system Chromium
   });
 
   console.log('browser ready')
