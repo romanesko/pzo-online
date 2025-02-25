@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    shm_size: '1gb'
     ports:
       - "3999:3000"
     env_file:
