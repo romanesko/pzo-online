@@ -102,12 +102,20 @@ export async function action({request, params}: Route.ActionArgs) {
 
 
 async function generatePDF({pages}: { pages: string[] }) {
+  console.log('trying to launch browser')
+
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: "/usr/bin/chromium",
+    timeout: 30000, // 30 seconds
   });
+
+  console.log('browser ready')
+
   const page = await browser.newPage();
 
-
+  console.log('page created')
   const htmlContent = `<html><head><style>
   body { padding: 20px; }
   @media print {
@@ -120,8 +128,11 @@ async function generatePDF({pages}: { pages: string[] }) {
   await page.setContent(htmlContent);
   const pdfBuffer = await page.pdf({format: "A4"});
 
+  console.log('pdf generated')
   // Close browser
   await browser.close();
+
+  console.log('browser closed')
 
   return new Response(pdfBuffer, {
     headers: {
