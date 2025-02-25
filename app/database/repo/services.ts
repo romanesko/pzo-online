@@ -1,5 +1,5 @@
 import {db} from "@/database/drizzle";
-import {booking, service} from "@/database/schema";
+import {service} from "@/database/schema";
 import {eq} from "drizzle-orm";
 
 

@@ -4,13 +4,12 @@ import React from "react";
 import Record from "@/routes/booking/components/Record";
 import {repo} from "@/database/repo";
 import {formatDate} from "@/lib/common";
-import type {Client, Office, ScheduleItemCombined} from "@/models";
+import type {ScheduleItemCombined} from "@/models";
 import {useFetcher, useNavigate} from "react-router";
 import RecordView from "@/routes/booking/components/RecordView";
 import {IconCalendarClock} from "@tabler/icons-react";
 import {session} from "@/lib/SessionStorage";
-import {type Route} from "@/types/routes/booking/+types/page";
-
+import type {Route} from "@/types/routes/booking/+types/page";
 
 export async function loader({request}: Route.LoaderArgs) {
   await session.userRequireRole(request, 'OPERATOR')

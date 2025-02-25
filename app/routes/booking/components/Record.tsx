@@ -1,6 +1,6 @@
 import {useDisclosure, useMediaQuery} from "@mantine/hooks";
 import React, {useEffect, useRef, useState} from "react";
-import {Alert, Button, type ComboboxItem, Group, Modal, NativeSelect, Stack, Table} from "@mantine/core";
+import {Alert, Button, Group, Modal, NativeSelect, Stack, Table} from "@mantine/core";
 import {useFetcher, useNavigate} from "react-router";
 import type {Client, ScheduleItem, Service} from "@/models";
 import ClientSearch from "@/routes/booking/components/ClientSearch";

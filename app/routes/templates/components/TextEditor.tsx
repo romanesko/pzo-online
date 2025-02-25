@@ -1,12 +1,6 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Group, Stack, Textarea} from "@mantine/core";
 import {useFetcher} from "react-router";
-import { RichTextEditor, Link } from '@mantine/tiptap';
-import { useEditor } from '@tiptap/react';
-import Highlight from '@tiptap/extension-highlight';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
 import {notifications} from "@mantine/notifications";
 import {IconCheck} from "@tabler/icons-react";
 import type {Document} from "@/models";

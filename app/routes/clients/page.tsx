@@ -1,4 +1,4 @@
-'use server'
+
 import {Card, Container, Grid, Group, Stack, Text} from "@mantine/core";
 
 import React from "react";

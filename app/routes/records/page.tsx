@@ -1,12 +1,10 @@
 import {Button, Container, Stack, Table, Tabs, Text} from "@mantine/core";
 import {repo} from "@/database/repo";
 import type {Route} from "@/types/routes/records/+types/page";
-import {actionWrapper, formatDateFull, FormDataWrapper} from "@/lib/common";
+import {actionWrapper, formatDateFull} from "@/lib/common";
 import type {RecordsResponse} from "@/database/repo/booking";
-import OfficeSchedule from "@/routes/schedule/components/OfficeSchedule";
 import {useNavigate} from "react-router";
 import VisitCheckbox from "@/routes/records/components/VisitCheckbox";
-import {Form} from "@mantine/form";
 
 
 export async function action({request}: Route.ActionArgs) {

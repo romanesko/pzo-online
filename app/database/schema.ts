@@ -13,7 +13,6 @@ import {
 	uniqueIndex
 } from "drizzle-orm/pg-core"
 import {relations, sql} from "drizzle-orm"
-import {number} from "@drizzle-team/brocli";
 
 export const bookingState = pgEnum("bookingState", ['pending', 'confirmed', 'canceled'])
 export const roles = pgEnum("roles", ['ADMIN', 'OPERATOR'])

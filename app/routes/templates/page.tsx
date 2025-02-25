@@ -1,7 +1,6 @@
 import {repo} from "@/database/repo";
-import {Container, Tabs, Text} from "@mantine/core";
+import {Container, Tabs} from "@mantine/core";
 import {session} from "@/lib/SessionStorage";
-import OfficeSchedule from "@/routes/schedule/components/OfficeSchedule";
 import {useNavigate} from "react-router";
 import type {Route} from "@/types/routes/templates/+types/page";
 import TextEditor from "@/routes/templates/components/TextEditor";
