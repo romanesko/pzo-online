@@ -1,6 +1,6 @@
 import {db} from "@/database/drizzle";
 import {offices} from "@/database/schema";
-import {eq, type InferSelectModel} from "drizzle-orm";
+import {eq, type InferSelectModel, sql} from "drizzle-orm";
 import assert from "node:assert";
 
 
@@ -18,6 +18,15 @@ export const officesRepo = {
   getById: async(id: number) => {
     assert(id, 'id is required')
     return db.select().from(offices).where(eq(offices.id, id)).then(res => res[0])
+
+  },
+  updateLastContractNumber(officeId:number) {
+
+    return db.update(offices)
+        .set({
+          lastContractNumber: sql`${offices.lastContractNumber} + 1`
+        })
+        .where(eq(offices.id,officeId));
 
   }
 }

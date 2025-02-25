@@ -1,8 +1,8 @@
 import {useDisclosure, useMediaQuery} from "@mantine/hooks";
 import React, {useEffect, useRef, useState} from "react";
-import {Alert, Button, Group, Modal, Stack, Table} from "@mantine/core";
+import {Alert, Button, type ComboboxItem, Group, Modal, NativeSelect, Stack, Table} from "@mantine/core";
 import {useFetcher, useNavigate} from "react-router";
-import type {Client, ScheduleItem} from "@/models";
+import type {Client, ScheduleItem, Service} from "@/models";
 import ClientSearch from "@/routes/booking/components/ClientSearch";
 import ClientAdd from "@/routes/booking/components/ClientAdd";
 import {IconAlertCircle} from "@tabler/icons-react";
@@ -16,9 +16,10 @@ interface RecordProps {
   client: Client | null
   slot: ScheduleItem
   moveFromBooking: number | null
+  services: Service[]
 }
 
-export default function Record({client: originalClient, slot, moveFromBooking}: RecordProps) {
+export default function Record({client: originalClient, slot, moveFromBooking, services}: RecordProps) {
 
   const [opened, {open, close}] = useDisclosure(true);
   const isMobile = useMediaQuery('(max-width: 50em)');
@@ -26,8 +27,12 @@ export default function Record({client: originalClient, slot, moveFromBooking}: 
 
   const [client, setClient] = useState(originalClient);
   const [createNewClient, setCreateNewClient] = useState(false)
+
+  const [selectedServiceId, setSelectedServiceId] = useState(services[0].id)
+
   const [proposedPhone, setProposedPhone] = useState('')
   const [submitting, setSubmitting] = useState(false)
+
   const navigate = useNavigate()
 
   const {data: office} = swr.getOffice(slot.officeId)
@@ -59,11 +64,18 @@ export default function Record({client: originalClient, slot, moveFromBooking}: 
       alert('Слот не указан')
       return
     }
+
+    if(!selectedServiceId){
+      alert('Услуга не выбрана')
+      return
+    }
+
     setSubmitting(true)
     fetcher.submit({
       action: 'addRecord',
       clientId: client.id,
       slotId: slot.id,
+      serviceId: selectedServiceId,
       moveFromBooking: moveFromBooking,
     }, {action: "/api/booking/record", method: "post"})
   }
@@ -133,6 +145,13 @@ export default function Record({client: originalClient, slot, moveFromBooking}: 
     if (!opened) {
       console.log('stopping locker')
       unlockSlot().then(() => {
+
+        if(moveFromBooking){
+          api.booking.getById(moveFromBooking).then(res=>{
+            mutateForEveryone(swrKeys.slotsForOfficeByDate(res.schedule.officeId, res.schedule.date))
+          })
+        }
+
         mutateForEveryone(swrKeys.slotsForOfficeByDate(slot.officeId, slot.date))
       })
     }
@@ -170,6 +189,14 @@ export default function Record({client: originalClient, slot, moveFromBooking}: 
           <Table.Tr>
             <Table.Th>Сеанс</Table.Th>
             <Table.Td>{slot.duration} мин</Table.Td>
+          </Table.Tr>
+          <Table.Tr>
+            <Table.Th>Услуга</Table.Th>
+            <Table.Td py={0}><NativeSelect variant="unstyled"
+                value={selectedServiceId}
+                onChange={(event) => setSelectedServiceId(+event.currentTarget.value)}
+                data={services.map(service => ({value: service.id.toString(), label: service.name} ))}
+            /></Table.Td>
           </Table.Tr>
 
           {client && <>

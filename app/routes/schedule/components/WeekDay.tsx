@@ -82,6 +82,7 @@ export default function WeekDay({num, date, width, officeId}: {
           Cancel
         </Button>
         <Button
+            loading={fetcher.state !== 'idle'}
             onClick={() => {
               doCopy()
             }} color="red">

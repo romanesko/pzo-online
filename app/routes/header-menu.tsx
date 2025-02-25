@@ -6,9 +6,10 @@ import {Link, useFetcher} from "react-router";
 import {useEffect} from "react";
 
 const links = [
-  {link: '/booking', label: 'Запись', role: 'OPERATOR'},
+  {link: '/booking', label: 'Календарь', role: 'OPERATOR'},
 
   {link: '/clients', label: 'Клиенты', role: 'OPERATOR'},
+  {link: '/records', label: 'Записи', role: 'OPERATOR'},
   {
     link: '', label: 'Администрирование', role: 'ADMIN', links: [
       {link: '/schedule', label: 'Расписание', role: 'ADMIN'},

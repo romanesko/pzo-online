@@ -105,6 +105,7 @@ export function formatDateFull(date: Date | string) {
     date = new Date(date)
   }
   const formatter = new Intl.DateTimeFormat('ru-RU', {
+    weekday: 'short',
     year: 'numeric',
     month: 'long',
     day: '2-digit'

@@ -1,3 +1,5 @@
+import type {ScheduleItemCombined} from "@/models";
+
 function objectToFormData(obj:any) {
   const formData = new FormData();
   for (const [key, value] of Object.entries(obj)) {
@@ -15,6 +17,7 @@ class Api {
     unlockSlot: (slotId: number) => this.post('/api/booking/lock', {action:'unlock', slotId:slotId}),
     clientById: (id: number) => this.get('/api/booking/client?id=' + id),
     officeById:(officeId: number)=> this.get('/api/booking/office?id=' + officeId),
+    getById:(bookingId: number) : Promise<ScheduleItemCombined> => this.get('/api/booking?id=' + bookingId),
 
   }
 

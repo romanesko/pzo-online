@@ -8,9 +8,11 @@ import {useNavigate} from "react-router";
 export default function ClientRecords({client, bookings}: { client: Client, bookings: ScheduleItemCombined[] }) {
 
   const [schedule, setSchedule] = useState<ScheduleItemCombined | null>(null)
+  const [renderCount, setRenderCount] = useState(0)
   const navigate = useNavigate()
 
   function handleRowClick(item: ScheduleItemCombined){
+    setRenderCount(renderCount + 1)
     setSchedule(item)
   }
 
@@ -47,7 +49,7 @@ export default function ClientRecords({client, bookings}: { client: Client, book
       <Button onClick={handleAddClick}  variant="outline">Записать на приём</Button>
 
 
-    {schedule && <RecordView key={client.id} slot={schedule}/>}
+    {schedule && <RecordView key={renderCount} slot={schedule}/>}
 
   </Stack>
 }

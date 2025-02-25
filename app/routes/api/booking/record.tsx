@@ -17,11 +17,13 @@ async function addRecord(fd: FormDataWrapper, request: Request) {
 
   const clientId = fd.requireNumber('clientId')
   const slotId = fd.requireNumber('slotId')
+  const serviceId = fd.requireNumber('serviceId')
   const moveFromBooking = fd.optionalNumber('moveFromBooking')
 
   const x = await repo.booking.add({
     slotId,
     clientId,
+    serviceId
   }, userId)
 
   if (moveFromBooking) {

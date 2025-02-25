@@ -1,12 +1,13 @@
 import type {InferSelectModel} from "drizzle-orm";
-import {booking, clients, offices, schedule, users} from "@/database/schema";
+import {booking, clients, offices, schedule, service, users,document} from "@/database/schema";
 
 export type Office = InferSelectModel<typeof offices>;
 export type User = InferSelectModel<typeof users>;
 export type Client = InferSelectModel<typeof clients>;
 export type Schedule = InferSelectModel<typeof schedule>;
 export type Booking = InferSelectModel<typeof booking>;
-
+export type Service = InferSelectModel<typeof service>
+export type Document = InferSelectModel<typeof document>
 
 export interface BaseEntity {
   id?: number;

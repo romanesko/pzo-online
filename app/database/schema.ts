@@ -12,7 +12,8 @@ import {
 	unique,
 	uniqueIndex
 } from "drizzle-orm/pg-core"
-import {sql} from "drizzle-orm"
+import {relations, sql} from "drizzle-orm"
+import {number} from "@drizzle-team/brocli";
 
 export const bookingState = pgEnum("bookingState", ['pending', 'confirmed', 'canceled'])
 export const roles = pgEnum("roles", ['ADMIN', 'OPERATOR'])
@@ -42,6 +43,7 @@ export const offices = pgTable("offices", {
 	signatory: text(),
 	signatoryStatus: text(),
 	attorneyNumber: text(),
+	lastContractNumber: integer().notNull().default(1),
 
 });
 
@@ -52,9 +54,29 @@ export const booking = pgTable("booking", {
 	createdAt: timestamp({ mode: 'string' }).defaultNow().notNull(),
 	state: bookingState().notNull(),
 	clientId: integer().notNull(),
+	visitedAt : timestamp({ mode: 'string' }),
+	serviceId: integer().notNull()
 }, (table) => [
 	uniqueIndex("unique_scheduleid_except_canceled").using("btree", table.scheduleId.asc().nullsLast().op("int4_ops")).where(sql`(state <> 'canceled'::"bookingState")`),
 ]);
+
+
+export const service = pgTable("service", {
+	id: serial().primaryKey().notNull(),
+	name: text().notNull(),
+	basePrice: integer().notNull(),
+	documents: text().array().notNull(),
+})
+
+
+
+export const bookingRelations = relations(booking, ({ one }) => ({
+	service: one(service, {
+		fields: [booking.serviceId],
+		references: [service.id]
+	})
+}))
+
 
 export const users = pgTable("users", {
 	id: serial().primaryKey().notNull(),
@@ -90,3 +112,12 @@ export const schedule = pgTable("schedule", {
 	index("office_date_idx").using("btree", table.officeId.asc().nullsLast().op("int4_ops"), table.date.asc().nullsLast()),
 	unique("unique_sched").on(table.date, table.startTime, table.officeId),
 ]);
+
+
+export const document = pgTable("documents", {
+	id: text().primaryKey().notNull(),
+	name: text().notNull(),
+	content: text().notNull(),
+	createdAt: timestamp({ mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp({ mode: 'string' }).defaultNow().notNull(),
+});

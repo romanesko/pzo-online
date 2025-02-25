@@ -8,11 +8,14 @@ import "./app.css";
 // All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/tiptap/styles.css';
+import '@mantine/notifications/styles.css';
 import {ColorSchemeScript, mantineHtmlProps, MantineProvider} from '@mantine/core';
 import {ClientSettingsProvider} from "@/lib/ClientSettingsContext";
 import {useEffect, useRef} from "react";
 import {api} from "@/lib/api";
 import {mutate} from "swr";
+import {Notifications} from "@mantine/notifications";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +28,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-      <MantineProvider>{children}</MantineProvider>
+      <MantineProvider>
+        <Notifications />
+        {children}
+      </MantineProvider>
       <ScrollRestoration />
       <Scripts />
       </body>
