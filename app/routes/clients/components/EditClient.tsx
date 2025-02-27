@@ -4,12 +4,19 @@ import {IconEdit, IconEye} from "@tabler/icons-react";
 import {useFetcher} from "react-router";
 import {type Client, clientFields} from "@/models";
 
-export default function EditClient({client}: { client: Client }) {
+
+interface EditClientOptions{
+  readOnly: boolean,
+  showPersonalData: boolean
+}
+
+
+export default function EditClient({client, opts}: { client: Client, opts?: EditClientOptions }) {
 
   let fetcher = useFetcher();
 
-  const [readOnly, setReadOnly] = useState(true);
-  const [showPersonalData, setShowPersonalData] = useState(false);
+  const [readOnly, setReadOnly] = useState(opts != undefined? opts.readOnly : true);
+  const [showPersonalData, setShowPersonalData] = useState(opts != undefined ? opts.showPersonalData : false);
 
   const variant = readOnly ? 'unstyled' : 'default';
 

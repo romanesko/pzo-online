@@ -1,10 +1,14 @@
-import {Button, Container, Stack, Table, Tabs, Text} from "@mantine/core";
+import {Button, Container, Modal, Stack, Table, Tabs, Text} from "@mantine/core";
 import {repo} from "@/database/repo";
 import type {Route} from "@/types/routes/records/+types/page";
 import {actionWrapper, formatDateFull} from "@/lib/common";
 import type {RecordsResponse} from "@/database/repo/booking";
 import {useFetcher, useNavigate} from "react-router";
 import VisitCheckbox from "@/routes/records/components/VisitCheckbox";
+import type {Client} from "@/models";
+import {useDisclosure} from "@mantine/hooks";
+import React, {useState} from "react";
+import EditClient from "@/routes/clients/components/EditClient";
 
 
 export async function action({request}: Route.ActionArgs) {
@@ -45,6 +49,15 @@ export default function Page({loaderData}: Route.ComponentProps) {
 
   const {dates, offices, officeId} = loaderData
   const navigate = useNavigate();
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null)
+
+  function handleClientClick(client: Client) {
+    setSelectedClient(client)
+    open()
+
+  }
 
   return <Container py={20}>
 
@@ -60,7 +73,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
         <Stack gap={"xl"} mt={"md"}>
           {Object.keys(dates).map(date => <Stack key={date}>
             <Text size={"xl"}>{formatDateFull(date)}</Text>
-            <RecordsTable records={dates[date]}/>
+            <RecordsTable records={dates[date]} onClientClick={handleClientClick}/>
 
           </Stack>)}
 
@@ -69,14 +82,18 @@ export default function Page({loaderData}: Route.ComponentProps) {
 
     </Tabs>
 
+    <Modal opened={opened} onClose={close} title="Клиент" >
+      {selectedClient && <EditClient key={selectedClient.id} client={selectedClient} opts={{readOnly: false, showPersonalData: true}}/>}
+    </Modal>
 
   </Container>
 }
 
 
-function RecordsTable({records}: { records: RecordsResponse[] }) {
+function RecordsTable({records, onClientClick}: { records: RecordsResponse[], onClientClick: (client: Client) => void }) {
 
   const fetcher = useFetcher()
+
 
   return <Table withTableBorder>
     <Table.Thead>
@@ -93,7 +110,7 @@ function RecordsTable({records}: { records: RecordsResponse[] }) {
           <Table.Tr key={idx}>
 
             <Table.Td ta="center">{row.schedule.startTime}</Table.Td>
-            <Table.Td>{row.client.lastName} {row.client.firstName} {row.client.middleName}</Table.Td>
+            <Table.Td onClick={()=>onClientClick(row.client)} style={{cursor:'pointer'}}>{row.client.lastName} {row.client.firstName} {row.client.middleName}</Table.Td>
             <Table.Td ta="center">{row.service.name}</Table.Td>
             <Table.Td ta="center"><VisitCheckbox key={row.booking.visitedAt} booking={row.booking}/></Table.Td>
             <Table.Td ta="center">
