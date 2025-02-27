@@ -40,6 +40,7 @@ export const offices = pgTable("offices", {
 	legalEntity: text(),
 	credentials: text(),
 	signatory: text(),
+	signatoryGenitive: text(),
 	signatoryStatus: text(),
 	attorneyNumber: text(),
 	lastContractNumber: integer().notNull().default(1),

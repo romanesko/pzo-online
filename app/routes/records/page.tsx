@@ -3,7 +3,7 @@ import {repo} from "@/database/repo";
 import type {Route} from "@/types/routes/records/+types/page";
 import {actionWrapper, formatDateFull} from "@/lib/common";
 import type {RecordsResponse} from "@/database/repo/booking";
-import {useNavigate} from "react-router";
+import {useFetcher, useNavigate} from "react-router";
 import VisitCheckbox from "@/routes/records/components/VisitCheckbox";
 
 
@@ -75,6 +75,9 @@ export default function Page({loaderData}: Route.ComponentProps) {
 
 
 function RecordsTable({records}: { records: RecordsResponse[] }) {
+
+  const fetcher = useFetcher()
+
   return <Table withTableBorder>
     <Table.Thead>
       <Table.Tr>
@@ -94,9 +97,9 @@ function RecordsTable({records}: { records: RecordsResponse[] }) {
             <Table.Td ta="center">{row.service.name}</Table.Td>
             <Table.Td ta="center"><VisitCheckbox key={row.booking.visitedAt} booking={row.booking}/></Table.Td>
             <Table.Td ta="center">
-              <form method="post" action={`/booking/${row.booking.id}/documents`} style={{display: 'inline'}}>
-              <Button size={"xs"} type={"submit"}>документы</Button>
-              </form>
+              <fetcher.Form method="post" action={`/booking/${row.booking.id}/documents`} style={{display: 'inline'}}>
+              <Button size={"xs"} type={"submit"} loading={fetcher.state != 'idle'}>документы</Button>
+              </fetcher.Form>
               </Table.Td>
 
 
