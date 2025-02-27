@@ -114,10 +114,10 @@ function RecordsTable({records, onClientClick}: { records: RecordsResponse[], on
             <Table.Td ta="center">{row.service.name}</Table.Td>
             <Table.Td ta="center"><VisitCheckbox key={row.booking.visitedAt} booking={row.booking}/></Table.Td>
             <Table.Td ta="center">
-              <fetcher.Form method="post" action={`/booking/${row.booking.id}/documents`} style={{display: 'inline'}}>
-              <Button size={"xs"} type={"submit"} loading={fetcher.state != 'idle'}>документы</Button>
-              </fetcher.Form>
-              </Table.Td>
+              <form method="post" action={`/booking/${row.booking.id}/documents`} style={{display: 'inline'}}>
+                <Button size={"xs"} type={"submit"} loading={fetcher.state != 'idle'}>документы</Button>
+              </form>
+            </Table.Td>
 
 
           </Table.Tr>

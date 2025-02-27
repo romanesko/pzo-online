@@ -30,9 +30,9 @@ async function getUserSession(request: Request) {
   return session;
 }
 
-// async function saveUserSession(session: any) {
-//   return storage.commitSession(session, { maxAge: THREE_DAYS });
-// }
+async function saveUserSession(session: any) {
+  return storage.commitSession(session, { maxAge: THREE_DAYS });
+}
 
 async function getUserId(request: Request) {
   const session = await getUserSession(request);
@@ -74,7 +74,7 @@ async function userRequireRole(session: any, role: string) {
 
 export const session = {
   getUserSession,
-  // saveUserSession,
+  saveUserSession,
   getUserId,
   getUserRoles,
   userRequireRole

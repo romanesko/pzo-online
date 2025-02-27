@@ -2,6 +2,10 @@ import type {Route} from "@/types/routes/records/+types/page";
 import puppeteer from "puppeteer";
 import {repo} from "@/database/repo";
 import type {ScheduleItemCombined} from "@/models";
+import * as path from "node:path";
+import * as fs from "node:fs";
+import {transliterate} from "@/lib/transliterate";
+import {lpad} from "@/lib/lpad";
 
 
 function processTemplate(template: string, data: Record<string, any>): string {
@@ -21,7 +25,6 @@ const monthFormatter = (date:Date)=>{
 async function prepareData(data: ScheduleItemCombined){
 
   const client = await repo.clients.getById(data.booking!.clientId)
-
 
 
   const office = data.offices!
@@ -47,6 +50,7 @@ async function prepareData(data: ScheduleItemCombined){
   return {
     contractNum: office.lastContractNumber,
     contractDay: contractDate.getDate(),
+    contractMonthNum: contractDate.getMonth() + 1,
     contractMonth: monthFormatter(contractDate),
     contractYear: contractDate.getFullYear(),
     todayDay: today.getDate(),
@@ -92,12 +96,34 @@ export async function action({request, params}: Route.ActionArgs) {
   for(const docId of service.documents) {
     const doc = await repo.documents.getById(docId)
     const content = processTemplate(doc.content,data)
+    // console.log(docId)
     pages.push(content)
   }
 
   await repo.offices.updateLastContractNumber(d.offices!.id).catch(console.error)
 
-  return generatePDF({pages: pages})
+  // const pdfBuffer = await generatePDF({pages: pages.slice(1,2)})
+
+  // const filePath = path.join(process.cwd(), "output.pdf");
+  // const pdfBuffer = fs.readFileSync(filePath);
+
+  const pdfBuffer = await generatePDF({pages})
+
+  const safeFio = transliterate(data.clientFIO.replace(/[^a-zA-Zа-яА-Я]/g, ''));
+  // console.log(data.clientFIO, safeFio)
+
+  let filename  = `${data.contractYear}-${lpad(data.contractMonthNum,2)}-${lpad(data.contractDay,2)}_${safeFio}.pdf`;
+  console.log('filename', filename)
+  // filename = 'document.pdf'
+
+  return new Response(pdfBuffer, {
+    headers: {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename=${filename}`,
+      "Content-Length": pdfBuffer.length.toString(),
+    },
+  });
+
 }
 
 
@@ -115,7 +141,7 @@ async function generatePDF({pages}: { pages: string[] }) {
       '--disable-features=Vulkan',
       '--use-gl=swiftshader'
     ],
-    executablePath: '/usr/bin/chromium',  // Ensure Puppeteer uses system Chromium
+    // executablePath: '/usr/bin/chromium',  // Ensure Puppeteer uses system Chromium
   });
 
   console.log('browser ready')
@@ -131,9 +157,15 @@ async function generatePDF({pages}: { pages: string[] }) {
 }
 </style></head><body>${pages.map(page => `<div class="page">${page}</div>`).join('')}</body></html>`;
 
+
   // Set content and generate PDF
   await page.setContent(htmlContent);
   const pdfBuffer = await page.pdf({format: "A4"});
+
+  // const filePath = path.join(process.cwd(), "output2.pdf");
+  // await fs.writeFileSync(filePath, pdfBuffer);
+
+  // console.log("PDF saved to", filePath);
 
   console.log('pdf generated')
   // Close browser
@@ -141,12 +173,10 @@ async function generatePDF({pages}: { pages: string[] }) {
 
   console.log('browser closed')
 
-  console.log('pdf generated with size of', pdfBuffer.length)
+  // const pdfBuffer2 = fs.readFileSync(filePath);
 
-  return new Response(pdfBuffer, {
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": "attachment; filename=document.pdf",
-    },
-  });
+  // console.log('pdf generated with size of', pdfBuffer2.length)
+
+  return pdfBuffer
+
 }
