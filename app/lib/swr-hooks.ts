@@ -28,14 +28,14 @@ const slotsByOfficeAndDAte = (officeId: number, date: string) => {
   });
 }
 
-const clientById = (clientId: number) => {
+const clientById = (clientId: number, fallbackData?: any) => {
   return useSWR(swrKeys.clientById(clientId), async () => {
     return api.booking.clientById(clientId).catch(err => {
       return {};
     }).then(a => {
       return a
     });
-  });
+  }, {fallbackData: fallbackData});
 }
 
 

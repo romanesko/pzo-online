@@ -1,4 +1,3 @@
-
 import {Card, Container, Grid, Group, Stack, Text} from "@mantine/core";
 
 import React from "react";
@@ -81,7 +80,7 @@ export default function ClientsPage({loaderData}: ClientsPageProps) {
                 <Text size="xs">Общая информация о клиенте</Text>
               </Card.Section>
               <Card.Section>
-                <EditClient key={selectedClient.id} client={selectedClient}/>
+                <EditClient key={selectedClient.id} clientId={selectedClient.id} optimistic={selectedClient}/>
               </Card.Section>
             </Card>
 

@@ -19,13 +19,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
     return {error: 'client not found'}
   }
 
-  return {
-    id: client.id,
-    phoneNumber: client.phoneNumber,
-    lastName: client.lastName,
-    firstName: client.firstName,
-    middleName: client.middleName
-  }
+  return client
 
 
 

@@ -1,4 +1,3 @@
-
 import {Card, Container, Grid, Group, Stack, Text} from "@mantine/core";
 import React from "react";
 import type {Route} from "../+types/home";

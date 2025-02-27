@@ -1,5 +1,6 @@
 // session.server.js
 
+// TODO: take user info from db, not from session
 
 import {createCookieSessionStorage, redirect} from "react-router";
 import {repo} from "@/database/repo";
@@ -9,8 +10,9 @@ if (!sessionSecret) {
   throw new Error("SESSION_SECRET must be set");
 }
 
-const storage
-    = createCookieSessionStorage({
+const THREE_DAYS = 3 * 24 * 60 * 60; // 3 days in seconds
+
+const storage = createCookieSessionStorage({
   cookie: {
     name: "RJ_session",
     secure: process.env.NODE_ENV === "production",
@@ -18,17 +20,19 @@ const storage
     sameSite: "lax",
     path: "/",
     httpOnly: true,
+    maxAge: THREE_DAYS,  // Session expires in 3 days
   },
 });
 
-
 async function getUserSession(request: Request) {
-  return storage.getSession(request.headers.get("Cookie"));
+  const session = await storage.getSession(request.headers.get("Cookie"));
+  session.set("_expires", Date.now() + THREE_DAYS * 1000);
+  return session;
 }
 
-async function saveUserSession(session: any) {
-  return storage.commitSession(session)
-}
+// async function saveUserSession(session: any) {
+//   return storage.commitSession(session, { maxAge: THREE_DAYS });
+// }
 
 async function getUserId(request: Request) {
   const session = await getUserSession(request);
@@ -70,10 +74,8 @@ async function userRequireRole(session: any, role: string) {
 
 export const session = {
   getUserSession,
-  saveUserSession,
+  // saveUserSession,
   getUserId,
-  requireUserId,
   getUserRoles,
-  userHasRole,
   userRequireRole
 }

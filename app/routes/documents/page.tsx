@@ -141,6 +141,8 @@ async function generatePDF({pages}: { pages: string[] }) {
 
   console.log('browser closed')
 
+  console.log('pdf generated with size of', pdfBuffer.length)
+
   return new Response(pdfBuffer, {
     headers: {
       "Content-Type": "application/pdf",

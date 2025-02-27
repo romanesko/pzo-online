@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {IconEdit, IconEye} from "@tabler/icons-react";
 import {useFetcher} from "react-router";
 import {type Client, clientFields} from "@/models";
+import {swr} from "@/lib/swr-hooks";
 
 
 interface EditClientOptions{
@@ -11,15 +12,16 @@ interface EditClientOptions{
 }
 
 
-export default function EditClient({client, opts}: { client: Client, opts?: EditClientOptions }) {
+export default function EditClient({clientId, optimistic, opts}: { clientId: number,optimistic?: Client, opts?: EditClientOptions }) {
 
   let fetcher = useFetcher();
+
+  const {data: client} = swr.clientById(clientId, optimistic)
 
   const [readOnly, setReadOnly] = useState(opts != undefined? opts.readOnly : true);
   const [showPersonalData, setShowPersonalData] = useState(opts != undefined ? opts.showPersonalData : false);
 
   const variant = readOnly ? 'unstyled' : 'default';
-
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
@@ -30,6 +32,10 @@ export default function EditClient({client, opts}: { client: Client, opts?: Edit
       }
     }
   }, [fetcher.state])
+
+  if(!client){
+    return <div>Loading...</div>
+  }
 
 
   return <div style={{position: 'relative'}}>

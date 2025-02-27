@@ -83,7 +83,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
     </Tabs>
 
     <Modal opened={opened} onClose={close} title="Клиент" >
-      {selectedClient && <EditClient key={selectedClient.id} client={selectedClient} opts={{readOnly: false, showPersonalData: true}}/>}
+      {selectedClient && <EditClient key={selectedClient.id} clientId={selectedClient.id} optimistic={selectedClient} opts={{readOnly: false, showPersonalData: true}}/>}
     </Modal>
 
   </Container>
