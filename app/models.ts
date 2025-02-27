@@ -33,6 +33,7 @@ export const officeFields: FieldsDefinition<Office> = [
   { name: 'signatory', label: 'Подписант', required: false },
   { name: 'signatoryGenitive', label: 'Подписант в род.падеже', required: false },
   { name: 'signatoryStatus', label: 'Должность подписанта', required: false },
+  { name: 'signatoryStatusGenitive', label: 'Должность подписанта в род.падеже', required: false },
   { name: 'attorneyNumber', label: 'Номер доверенности', required: false },
 
 

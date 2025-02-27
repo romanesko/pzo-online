@@ -44,8 +44,6 @@ async function prepareData(data: ScheduleItemCombined){
   }
 
 
-
-
   return {
     contractNum: office.lastContractNumber,
     contractDay: contractDate.getDate(),
@@ -57,6 +55,7 @@ async function prepareData(data: ScheduleItemCombined){
     signatory: office.signatory || defaultReplacer,
     signatoryGenitive: office.signatoryGenitive || defaultReplacer,
     signatoryStatus: office.signatoryStatus || defaultReplacer,
+    signatoryStatusGenitive: office.signatoryStatusGenitive || defaultReplacer,
     attorneyNumber: office.attorneyNumber || defaultReplacer,
     officeName: office.name || defaultReplacer,
     address: office.address || defaultReplacer,
