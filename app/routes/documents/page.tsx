@@ -55,6 +55,7 @@ async function prepareData(data: ScheduleItemCombined){
     todayMonth: monthFormatter(today),
     todayYear: today.getFullYear(),
     signatory: office.signatory || defaultReplacer,
+    signatoryGenitive: office.signatoryGenitive || defaultReplacer,
     signatoryStatus: office.signatoryStatus || defaultReplacer,
     attorneyNumber: office.attorneyNumber || defaultReplacer,
     officeName: office.name || defaultReplacer,
