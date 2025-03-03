@@ -60,21 +60,24 @@ async function getUserRoles(session: any) {
   return user.roles
 }
 
-async function userHasRole(session: any, role: string) {
-  const roles = await getUserRoles(session)
+async function userHasRole(session: any, rolesToCheck: string[]) {
+  const userRoles = await getUserRoles(session)
 
-  const hasRole = roles.includes(role)
-
-  if (!hasRole && role =='OPERATOR' && roles.includes('SUPEROPERATOR')) {
-    return true
+  if(userRoles.includes('SUPEROPERATOR')) {
+    userRoles.push('OPERATOR')
   }
 
-  return hasRole
+  return  userRoles.some(role => rolesToCheck.includes(role))
 }
 
-async function userRequireRole(session: any, role: string) {
-  if (!await userHasRole(session, role)) {
-    throw new Error('You have to be ' + role + ' to to this action')
+async function userRequireRole(session: any, roles: string | string[]) {
+
+  if(typeof roles == 'string') {
+    roles = [roles]
+  }
+
+  if (!await userHasRole(session, roles)) {
+    throw new Error('You have to be ' + roles.join(" or ") + ' to to this action')
   }
 }
 

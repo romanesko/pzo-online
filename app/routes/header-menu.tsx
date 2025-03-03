@@ -12,7 +12,7 @@ const links = [
   {link: '/records', label: 'Записи', roles: new  Set(['OPERATOR','SUPEROPERATOR'])},
   {
     link: '', label: 'Администрирование', roles: new Set(['ADMIN','SUPEROPERATOR']), links: [
-      {link: '/schedule', label: 'Расписание', roles: new Set( ['ADMIN'])},
+      {link: '/schedule', label: 'Расписание', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
       {link: '/offices', label: 'Клиники', roles: new Set(['ADMIN'])},
       {link: '/users', label: 'Пользователи системы', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
       {link: '/log', label: 'Лог действий', roles: new Set(['ADMIN'])},

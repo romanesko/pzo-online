@@ -29,7 +29,7 @@ export async function action({request,}: Route.ActionArgs) {
 
 export async function loader({request, params}: Route.LoaderArgs) {
 
-  await session.userRequireRole(request, 'ADMIN')
+  await session.userRequireRole(request, ['ADMIN','SUPEROPERATOR'])
 
   const offices = await repo.offices.getAll()
   let selectedOffice = null

@@ -10,7 +10,7 @@ import {actionWrapper, FormDataWrapper} from "@/lib/common";
 export async function action({request,}: Route.ActionArgs) {
   return actionWrapper(request, {
     save: async (fd: FormDataWrapper, request: Request) => {
-
+      await session.userRequireRole(request, ['ADMIN'])
       return repo.documents.updateContent( fd.requireString('docId'), fd.requireString('content'))
 
     },
