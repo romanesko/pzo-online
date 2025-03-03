@@ -6,24 +6,28 @@ import {Link, useFetcher} from "react-router";
 import {useEffect} from "react";
 
 const links = [
-  {link: '/booking', label: 'Календарь', role: 'OPERATOR'},
+  {link: '/booking', label: 'Календарь', roles: new Set(['OPERATOR','SUPEROPERATOR'])},
 
-  {link: '/clients', label: 'Клиенты', role: 'OPERATOR'},
-  {link: '/records', label: 'Записи', role: 'OPERATOR'},
+  {link: '/clients', label: 'Клиенты', roles: new  Set(['OPERATOR','SUPEROPERATOR'])},
+  {link: '/records', label: 'Записи', roles: new  Set(['OPERATOR','SUPEROPERATOR'])},
   {
-    link: '', label: 'Администрирование', role: 'ADMIN', links: [
-      {link: '/schedule', label: 'Расписание', role: 'ADMIN'},
-      {link: '/offices', label: 'Клиники', role: 'ADMIN'},
-      {link: '/users', label: 'Пользователи системы', role: 'ADMIN'},
-      {link: '/log', label: 'Лог действий', role: 'ADMIN'},
-      {link: '/templates', label: 'Шаблоны документов', role: 'ADMIN'}
+    link: '', label: 'Администрирование', roles: new Set(['ADMIN','SUPEROPERATOR']), links: [
+      {link: '/schedule', label: 'Расписание', roles: new Set( ['ADMIN'])},
+      {link: '/offices', label: 'Клиники', roles: new Set(['ADMIN'])},
+      {link: '/users', label: 'Пользователи системы', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
+      {link: '/log', label: 'Лог действий', roles: new Set(['ADMIN'])},
+      {link: '/templates', label: 'Шаблоны документов', roles: new Set(['ADMIN'])}
     ]
   },
 
 ] as any[];
 
+
+const isAllowed = (userRoles: any[], requiredRoles: Set<string>)=> userRoles.some(role => requiredRoles.has(role));
+
+
 function RenderLink({item, roles, children}: { item: any, roles: string[], children?: any }) {
-  if (roles.includes(item.role))
+  if (isAllowed(roles,item.roles))
     return <Link to={item.link} className={classes.link} onClick={(e) => {
       if (!item.link) {
         e.preventDefault()
@@ -93,7 +97,7 @@ export default function HeaderMenu({roles}: { roles: string[] }) {
       return (
           <Menu key={link.label} trigger="hover" transitionProps={{exitDuration: 0}} withinPortal>
             <Menu.Target>
-              {roles.includes(link.role) ? <Link
+              {isAllowed(roles,link.roles) ? <Link
                   to={link.link || ""} className={classes.link} onClick={e => {
                 if (!link.link) {
                   console.log('prevent')

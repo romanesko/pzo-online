@@ -3,9 +3,6 @@ import {Container, Grid, Group, Table, TableTbody, TableTh, TableThead, TableTr}
 import {repo} from "@/database/repo";
 import TableRow from "./components/table-row";
 import AddUser from "./components/add-user";
-import type {Route} from "../../../.react-router/types/app/routes/+types/home";
-import type {InferSelectModel} from "drizzle-orm";
-import {users} from "@/database/schema";
 import {
   changePassword,
   createUser,
@@ -15,17 +12,12 @@ import {
   switchUserActive
 } from "@/routes/users/actions";
 import {actionWrapper} from "@/lib/common";
+import type {Route} from "@/types/routes/users/+types/page";
 
 // import {getRoles} from "@/actions/users";
 
 
-interface UserPageProps {
-  loaderData: {
-    users: InferSelectModel<typeof users>[],
-    roles: { key: string, value: string }[]
 
-  };
-}
 
 export async function action({request,}: Route.ActionArgs) {
   return actionWrapper(request, {
@@ -46,13 +38,10 @@ export async function loader({request, params}: Route.LoaderArgs) {
   const users = await repo.users.getAll()
   const roles = await repo.users.getRoles()
 
-  let selectedClient = null
-
-
   return {users, roles}
 }
 
-export default function Page({loaderData}: UserPageProps) {
+export default function Page({loaderData}: Route.ComponentProps) {
 
 
   const {users, roles} = loaderData;

@@ -62,7 +62,14 @@ async function getUserRoles(session: any) {
 
 async function userHasRole(session: any, role: string) {
   const roles = await getUserRoles(session)
-  return roles.includes(role)
+
+  const hasRole = roles.includes(role)
+
+  if (!hasRole && role =='OPERATOR' && roles.includes('SUPEROPERATOR')) {
+    return true
+  }
+
+  return hasRole
 }
 
 async function userRequireRole(session: any, role: string) {

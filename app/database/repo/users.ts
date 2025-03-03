@@ -70,7 +70,7 @@ export const usersRepo = {
   },
 
   async getRoles() {
-    return [{key: 'ADMIN', value: 'Админ'}, {key: 'OPERATOR', value: 'Оператор'}]
+    return [{key: 'ADMIN', value: 'Админ'}, {key: 'SUPEROPERATOR', value: 'Супероператор'}, {key: 'OPERATOR', value: 'Оператор'}]
   },
 
   async addRole(userId: number, role: string) {

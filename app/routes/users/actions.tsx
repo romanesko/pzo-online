@@ -1,16 +1,16 @@
 import {repo} from "@/database/repo";
 import {FormDataWrapper} from "@/lib/common";
 import {randomBytes} from "crypto";
+import {session} from "@/lib/SessionStorage";
 
-function checkCurrentUserRole(role: string) {
-  return Promise.resolve()
+function checkCurrentUserRole(request: Request, role: string) {
+  return session.userRequireRole(request, role)
+
 }
 
 
-
-
-export async function createUser(fd: FormDataWrapper) {
-  await checkCurrentUserRole('ADMIN')
+export async function createUser(fd: FormDataWrapper, request: Request) {
+  await checkCurrentUserRole(request, 'ADMIN')
 
   const login = fd.requireString('login')
   const password = fd.requireString('password')
@@ -20,8 +20,8 @@ export async function createUser(fd: FormDataWrapper) {
   return  repo.users.add({login, password, name, roles})
 }
 
-export async function switchUserActive(fd: FormDataWrapper) {
-  await checkCurrentUserRole('ADMIN')
+export async function switchUserActive(fd: FormDataWrapper, request: Request) {
+  await checkCurrentUserRole(request,'ADMIN')
   const userId = fd.requireNumber('userId')
   const value = fd.formBooleanValue('value')
 
@@ -33,11 +33,17 @@ export async function switchUserActive(fd: FormDataWrapper) {
   return repo.users.updateActiveState(userId, value);
 }
 
-export async function switchRole(fd: FormDataWrapper) {
-  await checkCurrentUserRole('ADMIN')
+export async function switchRole(fd: FormDataWrapper, request: Request) {
+
   const userId = fd.requireNumber('userId')
   const role = fd.requireString('role')
   const set = fd.requireBoolean('set')
+
+  if (role == 'ADMIN'){
+    await checkCurrentUserRole(request,'ADMIN')
+  } else {
+    await checkCurrentUserRole(request,'SUPEROPERATOR')
+  }
 
   const user = await repo.users.getUserById(userId)
   if(user.login == 'admin' && role == 'ADMIN') {
@@ -55,8 +61,8 @@ export async function switchRole(fd: FormDataWrapper) {
 }
 
 
-export async function deleteUser(fd: FormDataWrapper) {
-  await checkCurrentUserRole('ADMIN')
+export async function deleteUser(fd: FormDataWrapper, request: Request) {
+  await checkCurrentUserRole(request,'ADMIN')
   const userId = fd.requireNumber('userId')
 
   const user = await repo.users.getUserById(userId)
@@ -67,7 +73,7 @@ export async function deleteUser(fd: FormDataWrapper) {
   return repo.users.deleteUser(userId)
 }
 
-export async function changePassword(fd: FormDataWrapper) {
+export async function changePassword(fd: FormDataWrapper, request: Request) {
   const userId = fd.requireNumber('userId')
   const password = fd.requireString('password')
   return repo.users.changePassword(userId, password)
@@ -75,7 +81,7 @@ export async function changePassword(fd: FormDataWrapper) {
 
 
 
-export async function generateRandomPassword(fd: FormDataWrapper) {
+export async function generateRandomPassword(fd: FormDataWrapper, request: Request) {
   const length = fd.requireNumber('length')
   return {password: randomBytes(length)
       .toString("base64") // Convert to a readable format

@@ -24,7 +24,7 @@ usersRepo.count().then(count => {
   if (count > 0) {
     return
   }
-  repo.users.add({login:'admin', name:'Администратор', password: 'admin',roles: ['ADMIN']})
+  repo.users.add({login:'admin', name:'Администратор', password: 'admin',roles: ['ADMIN','SUPEROPERATOR','OPERATOR']})
 })
 
 

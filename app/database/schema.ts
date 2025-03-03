@@ -15,7 +15,7 @@ import {
 import {relations, sql} from "drizzle-orm"
 
 export const bookingState = pgEnum("bookingState", ['pending', 'confirmed', 'canceled'])
-export const roles = pgEnum("roles", ['ADMIN', 'OPERATOR'])
+export const roles = pgEnum("roles", ['ADMIN', 'OPERATOR', 'SUPEROPERATOR'])
 
 
 export const clients = pgTable("clients", {
