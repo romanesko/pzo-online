@@ -107,7 +107,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
 
   return (<>
 
-        <Container mx={20} my={4} p={0}>
+        <Container mx={20} my={4} p={0} key={JSON.stringify(dates)}>
           <RangeCalendar dates={dates}/>
         </Container>
 
