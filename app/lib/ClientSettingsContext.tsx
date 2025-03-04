@@ -19,7 +19,7 @@ const ClientSettingsProvider: React.FC<{ children: ReactNode }> = ({children}) =
   useEffect(() => {
     const storedSettings = localStorage.getItem('settings');
     if (storedSettings) {
-      console.log('settings loaded from localStorage', settings)
+      // console.log('settings loaded from localStorage', settings)
       setSettings(JSON.parse(storedSettings))
     }
   }, [])

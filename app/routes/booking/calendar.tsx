@@ -2,9 +2,8 @@
 
 import DayColumn from "@/routes/booking/components/DayColumn";
 import {Text} from "@mantine/core";
-import type {Office, ScheduleItemCombined} from "@/models";
+import {type Office, type ScheduleItemCombined, Settings} from "@/models";
 import {calculateIntervals} from "@/lib/common";
-import type {Settings} from "@/database/repo/settings";
 
 
 function prettyTime(date: Date) {

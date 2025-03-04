@@ -78,16 +78,6 @@ export function formDataToModel<T extends BaseEntity>(fd: FormDataWrapper, def: 
 }
 
 
-export function searchParamNumber(request: Request, param: string) {
-  let url = new URL(request.url);
-  let id = url.searchParams.get("id");
-
-  if (id) {
-    return +id
-  }
-  return null
-
-}
 
 
 export function formatDate(date: Date) {
@@ -187,4 +177,21 @@ export function calculateDaysBetween(startDate: Date, endDate: Date): number {
   const end = endDate.getTime();
   const diffInMs = Math.abs(end - start);
   return Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+}
+
+
+export function formatCurrency(number: number): string {
+  const formatter = new Intl.NumberFormat('en-US',{
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  const parts = formatter.formatToParts(number);
+  const thinSpace = '\u2009';
+
+  return parts.map(part => {
+    if (part.type === 'group') {
+      return thinSpace;
+    }
+    return part.value;
+  }).join('');
 }

@@ -2,7 +2,12 @@ import {notifications} from "@mantine/notifications";
 import {IconAlertTriangle, IconCheck} from "@tabler/icons-react";
 import React from "react";
 
-export function alertError(msg:string, details?:string){
+export function alertError(msg?:string, details?:string){
+
+  if(!msg){
+    return
+  }
+
   notifications.show({
     title: msg,
     message: details || '',

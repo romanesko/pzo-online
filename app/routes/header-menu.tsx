@@ -16,9 +16,11 @@ const links = [
       {link: '/schedule', label: 'Расписание', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
       {link: '/offices', label: 'Клиники', roles: new Set(['ADMIN'])},
       {link: '/users', label: 'Пользователи системы', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
-      {link: '/log', label: 'Лог действий', roles: new Set(['ADMIN'])},
       {link: '/templates', label: 'Шаблоны документов', roles: new Set(['ADMIN'])},
-      {link: '/settings', label: 'Настройки', roles: new Set(['ADMIN'])}
+      {link: '/services', label: 'Услуги', roles: new Set(['ADMIN'])},
+      {link: '/settings', label: 'Настройки', roles: new Set(['ADMIN'])},
+      {link: '/log', label: 'Лог действий', roles: new Set(['ADMIN'])},
+
     ]
   },
 
