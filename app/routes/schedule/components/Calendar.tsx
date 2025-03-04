@@ -1,10 +1,10 @@
 // app/page.tsx
 
 import type {Office, Schedule, ScheduleItem, ScheduleItemBase} from "@/models";
-import {FIRST_SLOT, LAST_SLOT, SLOT_STEP} from "@/lib/constants";
 import Slot from "@/routes/schedule/components/Slot";
 import {Group} from "@mantine/core";
 import WeekDay from "@/routes/schedule/components/WeekDay";
+import type {Settings} from "@/database/repo/settings";
 
 const firstColumnWidth = 40
 const height = 20
@@ -14,8 +14,9 @@ interface CalendarProps {
   office: Office,
   dates: string[],
   schedule: { [key: string]: Schedule[] },
-  onAdd: (props: ScheduleItem) => void
-  onDelete: (props: { id: number }) => void
+  onAdd: (props: ScheduleItem) => void,
+  onDelete: (props: { id: number }) => void,
+  settings: Settings
 }
 
 export interface SlotInfo extends ScheduleItemBase {
@@ -23,7 +24,7 @@ export interface SlotInfo extends ScheduleItemBase {
   id?: number
 }
 
-export default function Calendar({office, dates, schedule, onAdd, onDelete}: CalendarProps) {
+export default function Calendar({office, dates, schedule, onAdd, onDelete, settings}: CalendarProps) {
 
   const calendar = [];
 
@@ -43,10 +44,10 @@ export default function Calendar({office, dates, schedule, onAdd, onDelete}: Cal
     const dateDate = Date.parse(date)
 
     const firstSlotDate = new Date(dateDate)
-    firstSlotDate.setHours(parseInt(FIRST_SLOT), 0, 0, 0)
+    firstSlotDate.setHours(parseInt(settings.FIRST_SLOT), 0, 0, 0)
 
     const lastSlotDate = new Date(dateDate)
-    lastSlotDate.setHours(parseInt(LAST_SLOT), 0, 0, 0)
+    lastSlotDate.setHours(parseInt(settings.LAST_SLOT), 0, 0, 0)
 
     const scheduleMap = {} as { [key: string]: ScheduleItem }
 
@@ -58,11 +59,11 @@ export default function Calendar({office, dates, schedule, onAdd, onDelete}: Cal
     let curTime = new Date(firstSlotDate)
     while (curTime < lastSlotDate) {
       const slotStart = curTime.toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})
-      const slotEnd = new Date(curTime.getTime() + SLOT_STEP * 60000).toLocaleTimeString('ru-RU', {
+      const slotEnd = new Date(curTime.getTime() + settings.SLOT_STEP * 60000).toLocaleTimeString('ru-RU', {
         hour: '2-digit',
         minute: '2-digit'
       })
-      let item = {startTime: slotStart, endTime: slotEnd, duration: SLOT_STEP, state: 0, id: undefined} as SlotInfo
+      let item = {startTime: slotStart, endTime: slotEnd, duration: settings.SLOT_STEP, state: 0, id: undefined} as SlotInfo
 
       const scheduleItem = scheduleMap[slotStart]
       if (scheduleItem) {
@@ -70,7 +71,7 @@ export default function Calendar({office, dates, schedule, onAdd, onDelete}: Cal
       }
 
       slots[slotStart] = item
-      curTime.setMinutes(curTime.getMinutes() + SLOT_STEP)
+      curTime.setMinutes(curTime.getMinutes() + settings.SLOT_STEP)
 
 
 

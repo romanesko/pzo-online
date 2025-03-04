@@ -3,6 +3,8 @@
 import DayColumn from "@/routes/booking/components/DayColumn";
 import {Text} from "@mantine/core";
 import type {Office, ScheduleItemCombined} from "@/models";
+import {calculateIntervals} from "@/lib/common";
+import type {Settings} from "@/database/repo/settings";
 
 
 function prettyTime(date: Date) {
@@ -16,21 +18,24 @@ interface CalendarProps {
   offices: Office[]
   date: string
   onSlotClick: (props: { slot: ScheduleItemCombined }) => void
+  settings: Settings
 }
 
 
 
-export default function Calendar({ date, offices, onSlotClick}: CalendarProps) {
 
-
-
+export default function Calendar({ date, offices, onSlotClick, settings}: CalendarProps) {
 
   const calendar = [] as {time: string, label: string, hourStart: boolean}[]
 
   const originalDate = new Date(date);
-  originalDate.setHours(9, 0, 0, 0);
 
-  for (let i = 0; i < 120; i++) {
+  const [hours, minutes] = settings.FIRST_SLOT.split(':').map(Number);
+  originalDate.setHours(hours, minutes, 0, 0);
+
+  const slotsCount = calculateIntervals(settings.FIRST_SLOT, settings.LAST_SLOT,settings.SLOT_STEP)
+
+  for (let i = 0; i < slotsCount; i++) {
     const minutes = 5 * i
     const date = new Date(originalDate.getTime() + minutes * 60000)
     const key = prettyTime(date)

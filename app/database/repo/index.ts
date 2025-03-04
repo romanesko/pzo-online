@@ -6,6 +6,7 @@ import {bookingRepo} from "@/database/repo/booking";
 import {logRepo} from "@/database/repo/log";
 import {servicesRepo} from "@/database/repo/services";
 import {documentsRepo} from "@/database/repo/documents";
+import {settingsRepo} from "@/database/repo/settings";
 
 
 export const repo = {
@@ -16,7 +17,8 @@ export const repo = {
   booking: bookingRepo,
   log: logRepo,
   services: servicesRepo,
-  documents: documentsRepo
+  documents: documentsRepo,
+  settings: settingsRepo
 }
 
 
@@ -24,16 +26,42 @@ usersRepo.count().then(count => {
   if (count > 0) {
     return
   }
-  repo.users.add({login:'admin', name:'Администратор', password: 'admin',roles: ['ADMIN','SUPEROPERATOR','OPERATOR']})
+  repo.users.add({
+    login: 'admin',
+    name: 'Администратор',
+    password: 'admin',
+    roles: ['ADMIN', 'SUPEROPERATOR', 'OPERATOR']
+  })
 })
 
 
-documentsRepo.count().then(count=>{
+documentsRepo.count().then(count => {
   if (count > 0) {
     return
   }
-  repo.documents.add({id:'contract', name: 'Договор оказания услуг', content: 'ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ МЕДИЦИНСКИХ УСЛУГ'})
-  repo.documents.add({id:'act', name: 'Акт об оказании медицинских услуг', content: 'Акт № ____ об оказании медицинских услуг'})
-  repo.documents.add({id:'ids', name: 'ИДС', content: 'ИНФОРМИРОВАННОЕ ДОБРОВОЛЬНОЕ СОГЛАСИЕ НА МЕДИЦИНСКОЕ ВМЕШАТЕЛЬСТВО'})
-  repo.documents.add({id:'sopd', name: 'СОПД', content: 'СОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ ЗАКОННОГО ПРЕДСТАВИТЕЛЯ ПАЦИЕНТА/ПРЕДСТАВИТЕЛЯ ПО ДОВЕРЕННОСТИ'})
+  repo.documents.add({
+    id: 'contract',
+    name: 'Договор оказания услуг',
+    content: 'ДОГОВОР ВОЗМЕЗДНОГО ОКАЗАНИЯ МЕДИЦИНСКИХ УСЛУГ'
+  })
+  repo.documents.add({
+    id: 'act',
+    name: 'Акт об оказании медицинских услуг',
+    content: 'Акт № ____ об оказании медицинских услуг'
+  })
+  repo.documents.add({
+    id: 'ids',
+    name: 'ИДС',
+    content: 'ИНФОРМИРОВАННОЕ ДОБРОВОЛЬНОЕ СОГЛАСИЕ НА МЕДИЦИНСКОЕ ВМЕШАТЕЛЬСТВО'
+  })
+  repo.documents.add({
+    id: 'sopd',
+    name: 'СОПД',
+    content: 'СОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ ЗАКОННОГО ПРЕДСТАВИТЕЛЯ ПАЦИЕНТА/ПРЕДСТАВИТЕЛЯ ПО ДОВЕРЕННОСТИ'
+  })
 })
+
+
+
+
+

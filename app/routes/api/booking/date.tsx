@@ -18,6 +18,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
 
   const slots =  await repo.schedule.getByOfficeAndDates(+officeId,[date])
 
+
   for (let slot of slots) {
     if (slot.booking) {
       continue

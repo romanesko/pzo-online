@@ -1,12 +1,14 @@
 import {Container, Tabs, Text} from "@mantine/core";
 import {repo} from "@/database/repo";
 import type {Office, ScheduleItemCombined} from "@/models";
-import type {Route} from "../../../.react-router/types/app/routes/+types/home";
+
 import {actionWrapper, formatDate} from "@/lib/common";
 import {useNavigate, useParams} from "react-router";
 import OfficeSchedule from "@/routes/schedule/components/OfficeSchedule";
 import {addScheduleItem, copyScheduleDate, deleteScheduleItem} from "@/routes/schedule/actions";
 import {session} from "@/lib/SessionStorage";
+import {settingsRepo} from "@/database/repo/settings";
+import type {Route} from "@/types/routes/schedule/+types/page";
 
 interface PageProps {
   loaderData: {
@@ -53,11 +55,13 @@ export async function loader({request, params}: Route.LoaderArgs) {
     data = await repo.schedule.getByOfficeAndDates(selectedOffice!.id, dates)
   }
 
-  return {offices, selectedOffice, dates, data}
+  const settings = await settingsRepo.get()
+
+  return {offices, selectedOffice, dates, data, settings}
 }
 
-export default function SchedulePage({loaderData}: PageProps) {
-  const {offices, selectedOffice, dates, data} = loaderData;
+export default function SchedulePage({loaderData}: Route.ComponentProps) {
+  const {offices, selectedOffice, dates, data,settings} = loaderData;
   // console.log('loaderData', loaderData)
   const navigate = useNavigate();
   const officeKey = (office: Office) => 'office' + office.id.toString()
@@ -77,7 +81,7 @@ export default function SchedulePage({loaderData}: PageProps) {
         ))}
       </Tabs.List>
       {selectedOffice && <Container py={0} px={0}>
-        <OfficeSchedule office={selectedOffice} data={data} dates={dates}/>
+        <OfficeSchedule office={selectedOffice} settings={settings} data={data} dates={dates}/>
       </Container>}
 
     </Tabs>

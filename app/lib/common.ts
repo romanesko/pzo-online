@@ -171,3 +171,20 @@ export function formatPhoneNumber(phoneNumber: string): string {
   return phoneNumber;
 }
 
+
+export function calculateIntervals(startTime:string, endTime:string, interval: number) {
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const [endHour, endMinute] = endTime.split(':').map(Number);
+  const startDate = new Date(0, 0, 0, startHour, startMinute);
+  const endDate = new Date(0, 0, 0, endHour, endMinute);
+  const diffInMs = endDate.valueOf() - startDate.valueOf();
+  const diffInMinutes = diffInMs / (1000 * 60);
+  return diffInMinutes / interval;
+}
+
+export function calculateDaysBetween(startDate: Date, endDate: Date): number {
+  const start = startDate.getTime();
+  const end = endDate.getTime();
+  const diffInMs = Math.abs(end - start);
+  return Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+}

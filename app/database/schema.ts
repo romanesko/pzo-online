@@ -122,3 +122,9 @@ export const document = pgTable("documents", {
 	createdAt: timestamp({ mode: 'string' }).defaultNow().notNull(),
 	updatedAt: timestamp({ mode: 'string' }).defaultNow().notNull(),
 });
+
+
+export const settings = pgTable("settings", {
+	key: text().primaryKey().notNull(),
+	value: text().notNull()
+});

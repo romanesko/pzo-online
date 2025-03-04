@@ -19,6 +19,7 @@ export default function DayColumn({calendar, officeId, date, width, height, onSl
   const {data, error, isLoading} = swr.slotsByOfficeAndDAte(officeId,date)
 
   function handleClick(item: ScheduleItemCombined){
+
     if(item.locked){
       alert('Кто-то сейчас работает с этим слотом. Попробуйте позже')
       return

@@ -4,14 +4,16 @@ import React, {useEffect} from "react";
 import {useFetcher} from "react-router";
 import Calendar from "@/routes/schedule/components/Calendar";
 import {WeekPicker} from "@/routes/schedule/components/WeekPicker";
+import type {Settings} from "@/database/repo/settings";
 
 interface OfficeScheduleProps {
   office: Office,
   dates: string[],
   data: ScheduleItemCombined[]
+  settings: Settings
 }
 
-export default function OfficeSchedule({office, dates, data}: OfficeScheduleProps) {
+export default function OfficeSchedule({office, dates, data, settings}: OfficeScheduleProps) {
 
   const fetcher = useFetcher();
 
@@ -57,7 +59,7 @@ export default function OfficeSchedule({office, dates, data}: OfficeScheduleProp
 
   return <Stack py={10} gap={10}>
     <Group justify="center"><WeekPicker officeId={office.id} dates={dates}/></Group>
-    <Calendar  schedule={scheduleMap} dates={dates} office={office} onAdd={onAdd} onDelete={onDelete}/>
+    <Calendar  schedule={scheduleMap} settings={settings} dates={dates} office={office} onAdd={onAdd} onDelete={onDelete}/>
   </Stack>
 
 

@@ -22,6 +22,7 @@ const slotsByOfficeAndDAte = (officeId: number, date: string) => {
       for (let item of a) {
         map[item.schedule.startTime] = item
       }
+
       return map
     });
 
