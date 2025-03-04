@@ -2,8 +2,6 @@ import type {Route} from "@/types/routes/records/+types/page";
 import puppeteer from "puppeteer";
 import {repo} from "@/database/repo";
 import type {ScheduleItemCombined} from "@/models";
-import * as path from "node:path";
-import * as fs from "node:fs";
 import {transliterate} from "@/lib/transliterate";
 import {lpad} from "@/lib/lpad";
 

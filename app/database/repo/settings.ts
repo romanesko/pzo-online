@@ -15,7 +15,6 @@ function getValue(key: string): Promise<string | undefined> {
 }
 
 
-
 export const settingsRepo = {
   get: async () => {
     const rows = await db.select().from(settings)
@@ -25,28 +24,28 @@ export const settingsRepo = {
     rows.forEach((row) => {
       const key = row.key
 
-        if (Object.prototype.hasOwnProperty.call(currentSettings, key)) {
-          const value = row.value;
-          // @ts-ignore
-          const propertyType = typeof currentSettings[key];
+      if (Object.prototype.hasOwnProperty.call(currentSettings, key)) {
+        const value = row.value;
+        // @ts-ignore
+        const propertyType = typeof currentSettings[key];
 
-          switch (propertyType) {
-            case 'string':
-              // @ts-ignore
-              currentSettings[key as keyof Settings] = String(value);
-              break;
-            case 'number':
-              // @ts-ignore
-              currentSettings[key as keyof Settings] = Number(value);
-              break;
-            case 'boolean':
-              // @ts-ignore
-              currentSettings[key as keyof Settings] = Boolean(value);
-              break;
-            default:
-              // @ts-ignore
-              currentSettings[key as keyof Settings] = value;
-          }
+        switch (propertyType) {
+          case 'string':
+            // @ts-ignore
+            currentSettings[key as keyof Settings] = String(value);
+            break;
+          case 'number':
+            // @ts-ignore
+            currentSettings[key as keyof Settings] = Number(value);
+            break;
+          case 'boolean':
+            // @ts-ignore
+            currentSettings[key as keyof Settings] = Boolean(value);
+            break;
+          default:
+            // @ts-ignore
+            currentSettings[key as keyof Settings] = value;
+        }
 
       }
     });
@@ -69,12 +68,13 @@ export const settingsRepo = {
 // insert default settings
 const defSettings = new Settings()
 for (const key of Object.keys(defSettings)) {
-  const value = await getValue(key)
-  if (!value) {
-    // @ts-ignore
-    const valToInsert = defSettings[key];
-    await db.insert(settings).values({key, value: valToInsert})
-  }
+  getValue(key).then(value => {
+    if (!value) {
+      // @ts-ignore
+      const valToInsert = defSettings[key];
+      db.insert(settings).values({key, value: valToInsert})
+    }
+  })
 }
 
 

@@ -1,7 +1,7 @@
 import {Button, Container, Group, Modal, Stack, Text} from "@mantine/core";
 import {formatDate} from "@/lib/common";
 import {useDisclosure} from "@mantine/hooks";
-import {Calendar, DatePicker} from "@mantine/dates";
+import {DatePicker} from "@mantine/dates";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 
