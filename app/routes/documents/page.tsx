@@ -152,6 +152,7 @@ async function generatePDF({pages}: { pages: string[] }) {
   @media print {
     .page, .page-break { break-after: page; }
     .page { margin-top: 10px; font-size: 10pt; }
+    .page p {margin:0; padding-top:0; padding-bottom:2px}
 }
 </style></head><body>${pages.map(page => `<div class="page">${page}</div>`).join('')}</body></html>`;
 
