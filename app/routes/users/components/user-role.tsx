@@ -6,6 +6,7 @@ import {Loader} from "@mantine/core";
 // import {addRole, removeRole} from "@/actions/users";
 import type {InferSelectModel} from "drizzle-orm";
 import {useFetcher} from "react-router";
+import {alertError} from "@/lib/notify";
 
 export default function UserRole({user, role}: { user: InferSelectModel<typeof users>, role: string }) {
 
@@ -17,7 +18,7 @@ export default function UserRole({user, role}: { user: InferSelectModel<typeof u
     if (!fetcher.data) return
 
     if (fetcher.data.error) {
-      alert(fetcher.data.error)
+      alertError(fetcher.data.error)
       return
     }
 

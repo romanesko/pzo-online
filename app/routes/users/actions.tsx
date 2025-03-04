@@ -15,7 +15,7 @@ export async function createUser(fd: FormDataWrapper, request: Request) {
   const login = fd.requireString('login')
   const password = fd.requireString('password')
   const name = fd.requireString('name')
-  const roles = fd.getAll('role').map(role => role.toString())
+  const roles = fd.getAll('role').filter(role=>role.toString()!='ADMIN').map(role => role.toString())
 
   return  repo.users.add({login, password, name, roles})
 }

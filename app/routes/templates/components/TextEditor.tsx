@@ -4,6 +4,7 @@ import {useFetcher} from "react-router";
 import {notifications} from "@mantine/notifications";
 import {IconCheck} from "@tabler/icons-react";
 import type {Document} from "@/models";
+import {alertError} from "@/lib/notify";
 
 export default function TextEditor({document}: {document: Document}){
   // const editor = useEditor({
@@ -33,7 +34,7 @@ export default function TextEditor({document}: {document: Document}){
   useEffect(() => {
     if (fetcher.data) {
       if (fetcher.data.error) {
-        alert(fetcher.data.error)
+        alertError(fetcher.data.error)
         return
       } else {
         notifications.show({

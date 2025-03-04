@@ -12,6 +12,7 @@ import {session} from "@/lib/SessionStorage";
 import type {Route} from "@/types/routes/booking/+types/page";
 import {settingsRepo} from "@/database/repo/settings";
 import RangeCalendar from "@/routes/booking/components/RangeCalendar";
+import {alertError} from "@/lib/notify";
 
 export async function loader({request}: Route.LoaderArgs) {
   await session.userRequireRole(request, 'OPERATOR')
@@ -90,7 +91,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
       const eventDate = new Date(datetimeString);
       const now = new Date();
       if (eventDate < now) {
-        return alert('Слот недоступен (время прошло)')
+        return alertError('Слот недоступен (время прошло)')
       }
     }
 

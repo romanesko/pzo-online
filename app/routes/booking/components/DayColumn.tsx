@@ -3,6 +3,7 @@ import {Loader} from "@mantine/core";
 import type {ScheduleItemCombined} from "@/models";
 import classNames from "classnames";
 import {swr} from "@/lib/swr-hooks";
+import {alertError} from "@/lib/notify";
 
 export interface DayColumnParams {
   calendar: { time: string, label: string, hourStart: boolean }[]
@@ -21,7 +22,7 @@ export default function DayColumn({calendar, officeId, date, width, height, onSl
   function handleClick(item: ScheduleItemCombined){
 
     if(item.locked){
-      alert('Кто-то сейчас работает с этим слотом. Попробуйте позже')
+      alertError('Кто-то сейчас работает с этим слотом. Попробуйте позже')
       return
     }
 

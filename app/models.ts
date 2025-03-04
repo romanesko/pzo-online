@@ -82,3 +82,10 @@ export interface ScheduleItemCombined  {
 
 }
 
+
+export class Settings {
+  FIRST_SLOT: string = '09:00'
+  LAST_SLOT: string = '20:00'
+  SLOT_STEP: number = 5
+  DEFAULT_CALENDAR_DAYS: number = 7
+}

@@ -2,6 +2,7 @@ import {Switch} from "@mantine/core";
 import React, {useEffect} from "react";
 import type {User} from "@/models";
 import {useFetcher} from "react-router";
+import {alertError} from "@/lib/notify";
 
 export default function ActiveSwitch({user}: { user: User }) {
 
@@ -11,7 +12,7 @@ export default function ActiveSwitch({user}: { user: User }) {
   useEffect(() => {
     if (!fetcher.data) return
     if (fetcher.data.error) {
-      alert(fetcher.data.error)
+      alertError(fetcher.data.error)
       setValue(user.isActive)
       return
     }

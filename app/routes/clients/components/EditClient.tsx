@@ -4,6 +4,7 @@ import {IconEdit, IconEye} from "@tabler/icons-react";
 import {useFetcher} from "react-router";
 import {type Client, clientFields} from "@/models";
 import {swr} from "@/lib/swr-hooks";
+import {alertError} from "@/lib/notify";
 
 
 interface EditClientOptions{
@@ -26,7 +27,7 @@ export default function EditClient({clientId, optimistic, opts}: { clientId: num
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
       if (fetcher.data.error){
-      alert(fetcher.data.error)
+        alertError(fetcher.data.error)
       } else {
         setReadOnly(true)
       }

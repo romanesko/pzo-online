@@ -4,6 +4,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {DatePicker} from "@mantine/dates";
 import {useState} from "react";
 import {useNavigate} from "react-router";
+import {alertError} from "@/lib/notify";
 
 export interface RangeCalendarProps {
    dates: {date: string, label: string}[]
@@ -33,7 +34,7 @@ export default function RangeCalendar(props: RangeCalendarProps){
 
   function handleApplyClick(){
     if(fromDate == null || toDate == null){
-      alert('Не выбран диапазон дат')
+      alertError('Не выбран диапазон дат')
       return
     }
     const strFrom = formatDate(fromDate)

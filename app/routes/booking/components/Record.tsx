@@ -10,6 +10,7 @@ import {prettyPrintPhone, swrKeys} from "@/lib/common";
 import {api} from "@/lib/api";
 import {mutateForEveryone} from "@/lib/mutate";
 import {swr} from "@/lib/swr-hooks";
+import {alertError} from "@/lib/notify";
 
 
 interface RecordProps {
@@ -57,16 +58,16 @@ export default function Record({client: originalClient, slot, moveFromBooking, s
 
   function handleAddNewRecord() {
     if (!client || !client.id) {
-      alert('Клиент не указан')
+      alertError('Клиент не указан')
       return
     }
     if (!slot || !slot.id) {
-      alert('Слот не указан')
+      alertError('Слот не указан')
       return
     }
 
     if(!selectedServiceId){
-      alert('Услуга не выбрана')
+      alertError('Услуга не выбрана')
       return
     }
 

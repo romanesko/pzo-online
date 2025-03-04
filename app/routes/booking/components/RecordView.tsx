@@ -7,6 +7,7 @@ import {useFetcher, useNavigate} from "react-router";
 import {IconAlertCircle} from "@tabler/icons-react";
 import {swrKeys} from "@/lib/common";
 import {mutateForEveryone} from "@/lib/mutate";
+import {alertError} from "@/lib/notify";
 
 export interface RecordViewParams {
   slot: ScheduleItemCombined
@@ -17,7 +18,7 @@ function processAction(fetcher: any, actionName: string, params: any) {
     action: actionName,
     ...params
   }, {action: '/api/booking/update', method: 'post'}).catch((err: any) => {
-    alert(err)
+    alertError(err)
   })
 }
 

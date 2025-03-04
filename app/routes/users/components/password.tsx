@@ -7,6 +7,7 @@ import {useDisclosure} from "@mantine/hooks";
 import {IconLockPlus} from "@tabler/icons-react";
 import type {InferSelectModel} from "drizzle-orm";
 import {useFetcher} from "react-router";
+import {alertError} from "@/lib/notify";
 // import {changePassword} from "@/actions/users";
 
 export default function ChangePassword({user}: { user: InferSelectModel<typeof users> }) {
@@ -25,7 +26,7 @@ export default function ChangePassword({user}: { user: InferSelectModel<typeof u
     if (!fetcher.data) return
 
     if (fetcher.data.error) {
-      alert(fetcher.data.error)
+      alertError(fetcher.data.error)
       return
     }
 

@@ -1,14 +1,10 @@
 import {settings} from "@/database/schema";
 import {db} from "@/database/drizzle";
 import {eq} from "drizzle-orm";
+import {Settings} from "@/models";
 
 
-export class Settings {
-  FIRST_SLOT: string = '09:00'
-  LAST_SLOT: string = '20:00'
-  SLOT_STEP: number = 5
-  DEFAULT_CALENDAR_DAYS: number = 7
-}
+
 
 function getValue(key: string): Promise<string | undefined> {
   return db.select().from(settings).where(eq(settings.key, key)).then(a => a[0]).then(a => a?.value)

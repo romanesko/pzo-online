@@ -5,6 +5,7 @@ import {useFetcher} from "react-router";
 import {formatDate, formatDateFull} from "@/lib/common";
 import {Calendar} from "@mantine/dates";
 import {IconCopy} from "@tabler/icons-react";
+import {alertError} from "@/lib/notify";
 
 const weekdays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
@@ -46,7 +47,7 @@ export default function WeekDay({num, date, width, officeId}: {
     }
 
     if (fetcher.data.error) {
-      alert(fetcher.data.error)
+      alertError(fetcher.data.error)
       return
     }
 

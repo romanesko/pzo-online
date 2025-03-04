@@ -6,6 +6,7 @@ import type {ScheduleItemBase} from "@/models";
 import type {SlotInfo} from "@/routes/schedule/components/Calendar";
 import {useClientSettings} from "@/lib/ClientSettingsContext";
 import {IconCheck, IconTrash} from "@tabler/icons-react";
+import {alertError} from "@/lib/notify";
 
 
 export interface SlotProps {
@@ -55,7 +56,7 @@ export default function Slot({item, hourStart, width, height, onAdd, onDelete}: 
 
   function handleDeleteClick(){
     if(!item.id){
-      alert('ID is missing somehow')
+      alertError('ID is missing somehow')
       return
     }
     onDelete({id: item.id})

@@ -5,6 +5,7 @@ import {Group, Loader} from "@mantine/core";
 // import {addRole, removeRole} from "@/actions/users";
 import {useFetcher} from "react-router";
 import type {Booking} from "@/models";
+import {alertError} from "@/lib/notify";
 
 export default function VisitCheckbox({booking, }: { booking: Booking }) {
 
@@ -16,7 +17,7 @@ export default function VisitCheckbox({booking, }: { booking: Booking }) {
     if (!fetcher.data) return
 
     if (fetcher.data.error) {
-      alert(fetcher.data.error)
+      alertError(fetcher.data.error)
       return
     }
 

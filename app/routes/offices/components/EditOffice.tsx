@@ -11,9 +11,7 @@ export default function EditOffice({office}: { office: Office }) {
 
   const variant = 'default'
 
-  function removeOffice(){
-    alert('Not implemented')
-  }
+
 
   // const buttons = [{label:'delete', icon: <IconTrash stroke={1.5} style={{width: '70%', height: '70%'}}/>, action: () => removeOffice()}]
   const buttons = [] as {label: string, icon: any, action: () => void}[]

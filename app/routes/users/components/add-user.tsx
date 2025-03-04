@@ -59,8 +59,7 @@ export default function AddUser({roles: usrRoles}: { roles: { key: string, value
 
           <Input.Wrapper label="Роли">
             <Group>
-              {usrRoles.map((item, i) => (
-
+              {usrRoles.filter(role=>role.key!='ADMIN').map((item, i) => (
                   <Checkbox
                       mt={2} mb={4} label={item.value} key={item.key}
                       name={"role"}

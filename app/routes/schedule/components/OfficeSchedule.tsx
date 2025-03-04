@@ -1,10 +1,10 @@
-import type {Office, Schedule, ScheduleItem, ScheduleItemCombined} from "@/models";
+import {type Office, type Schedule, type ScheduleItem, type ScheduleItemCombined, Settings} from "@/models";
 import {Group, Stack} from "@mantine/core";
 import React, {useEffect} from "react";
 import {useFetcher} from "react-router";
 import Calendar from "@/routes/schedule/components/Calendar";
 import {WeekPicker} from "@/routes/schedule/components/WeekPicker";
-import type {Settings} from "@/database/repo/settings";
+import {alertError} from "@/lib/notify";
 
 interface OfficeScheduleProps {
   office: Office,
@@ -21,7 +21,7 @@ export default function OfficeSchedule({office, dates, data, settings}: OfficeSc
         if (!fetcher.data) return
         // console.log('fetcher.data', fetcher.data)
         if (fetcher.data.error) {
-          alert(fetcher.data.error)
+          alertError(fetcher.data.error)
           return
         }
 

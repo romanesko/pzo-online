@@ -7,6 +7,7 @@ import {Button, Group, Modal} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import type {InferSelectModel} from "drizzle-orm";
 import {useFetcher} from "react-router";
+import {alertError} from "@/lib/notify";
 
 export default function DeleteUser({user}: { user: InferSelectModel<typeof users> }) {
 
@@ -20,7 +21,7 @@ export default function DeleteUser({user}: { user: InferSelectModel<typeof users
     if (!fetcher.data) return
 
     if (fetcher.data.error) {
-      alert(fetcher.data.error)
+      alertError(fetcher.data.error)
       return
     }
 
