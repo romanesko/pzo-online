@@ -27,6 +27,8 @@ export default [
     route('offices', 'routes/offices/page.tsx'),
     route('log', 'routes/log/page.tsx'),
     route('templates/:templateId?', 'routes/templates/page.tsx'),
-    route('records/:officeId?', 'routes/records/page.tsx')
+    route('records/:officeId?', 'routes/records/page.tsx'),
+    route('settings', 'routes/settings/page.tsx'),
+    route('services', 'routes/services/page.tsx'),
   ]),
 ] satisfies RouteConfig;
