@@ -3,14 +3,14 @@ import {FormDataWrapper} from "@/lib/common";
 import {randomBytes} from "crypto";
 import {session} from "@/lib/SessionStorage";
 
-function checkCurrentUserRole(request: Request, role: string) {
+function checkCurrentUserRole(request: Request, role: string | string[]) {
   return session.userRequireRole(request, role)
 
 }
 
 
 export async function createUser(fd: FormDataWrapper, request: Request) {
-  await checkCurrentUserRole(request, 'ADMIN')
+  await checkCurrentUserRole(request, ['ADMIN','SUPEROPERATOR'])
 
   const login = fd.requireString('login')
   const password = fd.requireString('password')
@@ -74,6 +74,8 @@ export async function deleteUser(fd: FormDataWrapper, request: Request) {
 }
 
 export async function changePassword(fd: FormDataWrapper, request: Request) {
+  await checkCurrentUserRole(request, ['ADMIN','SUPEROPERATOR'])
+
   const userId = fd.requireNumber('userId')
   const password = fd.requireString('password')
   return repo.users.changePassword(userId, password)

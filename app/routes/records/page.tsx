@@ -5,7 +5,7 @@ import {actionWrapper, formatDateFull} from "@/lib/common";
 import type {RecordsResponse} from "@/database/repo/booking";
 import {useFetcher, useNavigate} from "react-router";
 import VisitCheckbox from "@/routes/records/components/VisitCheckbox";
-import type {Client} from "@/models";
+import type {Client, Office} from "@/models";
 import {useDisclosure} from "@mantine/hooks";
 import React, {useState} from "react";
 import EditClient from "@/routes/clients/components/EditClient";
@@ -47,7 +47,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
 export default function Page({loaderData}: Route.ComponentProps) {
 
 
-  const {dates, offices, officeId} = loaderData
+  const {dates , offices, officeId} = loaderData as {dates: { [key: string]: RecordsResponse[] }, offices: Office[], officeId: string}
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -71,7 +71,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
       </Tabs.List>
       {officeId && <Container py={0} px={0}>
         <Stack gap={"xl"} mt={"md"}>
-          {Object.keys(dates).map(date => <Stack key={date}>
+          {Object.keys(dates ).map(date => <Stack key={date}>
             <Text size={"xl"}>{formatDateFull(date)}</Text>
             <RecordsTable records={dates[date]} onClientClick={handleClientClick}/>
 
@@ -100,7 +100,7 @@ function RecordsTable({records, onClientClick}: { records: RecordsResponse[], on
       <Table.Tr>
         <Table.Th ta="center" w={102}><Text size={"xs"} c={"dimmed"}>Время</Text></Table.Th>
         <Table.Th style={{width: '100%'}}><Text size={"xs"} c={"dimmed"}>Клиент</Text></Table.Th>
-        <Table.Th><Text size={"xs"} c={"dimmed"}>Услуга</Text></Table.Th>
+        <Table.Th  ta="center"><Text size={"xs"} c={"dimmed"}>Услуга</Text></Table.Th>
         <Table.Th ta="center"><Text size={"xs"} c={"dimmed"}>Посетил</Text></Table.Th>
         <Table.Th ta="center"><Text size={"xs"} c={"dimmed"}>Документы</Text></Table.Th>
       </Table.Tr>
@@ -111,7 +111,7 @@ function RecordsTable({records, onClientClick}: { records: RecordsResponse[], on
 
             <Table.Td ta="center">{row.schedule.startTime}</Table.Td>
             <Table.Td onClick={()=>onClientClick(row.client)} style={{cursor:'pointer'}}>{row.client.lastName} {row.client.firstName} {row.client.middleName}</Table.Td>
-            <Table.Td ta="center">{row.service.name}</Table.Td>
+            <Table.Td ta="center" style={{whiteSpace: 'nowrap'}}>{row.service.name}</Table.Td>
             <Table.Td ta="center"><VisitCheckbox key={row.booking.visitedAt} booking={row.booking}/></Table.Td>
             <Table.Td ta="center">
               <form method="post" action={`/booking/${row.booking.id}/documents`} style={{display: 'inline'}}>

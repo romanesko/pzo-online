@@ -104,7 +104,6 @@ export default function HeaderMenu({roles}: { roles: string[] }) {
                <Link
                   to={link.link || ""} className={classes.link} onClick={e => {
                 if (!link.link) {
-                  console.log('prevent')
                   e.preventDefault()
                 }
               }}>
