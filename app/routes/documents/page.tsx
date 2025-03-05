@@ -128,21 +128,29 @@ export async function action({request, params}: Route.ActionArgs) {
 async function generatePDF({pages}: { pages: string[] }) {
   console.log('trying to launch browser')
 
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--disable-software-rasterizer',
-      '--disable-features=Vulkan',
-      '--use-gl=swiftshader'
-    ],
-    // executablePath: '/usr/bin/chromium',  // Ensure Puppeteer uses system Chromium
-  });
+  let browser = null;
 
-  console.log('browser ready')
+  try {
+    browser = await puppeteer.connect({browserWSEndpoint: 'ws://puppeteer:3000'});
+  } catch (e) {
+    browser = await puppeteer.connect({browserWSEndpoint: 'ws://localhost:3010'});
+  }
+
+  // const browser = await puppeteer.launch({
+  //   headless: true,
+  //   args: [
+  //     '--no-sandbox',
+  //     '--disable-setuid-sandbox',
+  //     '--disable-dev-shm-usage',
+  //     '--disable-gpu',
+  //     '--disable-software-rasterizer',
+  //     '--disable-features=Vulkan',
+  //     '--use-gl=swiftshader'
+  //   ],
+  //   // executablePath: '/usr/bin/chromium',  // Ensure Puppeteer uses system Chromium
+  // });
+  //
+  // console.log('browser ready')
 
   const page = await browser.newPage();
 

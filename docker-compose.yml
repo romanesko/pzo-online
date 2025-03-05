@@ -1,4 +1,12 @@
 services:
+  puppeteer:
+    image: browserless/chrome:latest
+    restart: unless-stopped
+    shm_size: '1gb'
+    environment:
+      - "CONNECTION_TIMEOUT=300000"
+    ports:
+      - "3010:3000"
   pzo-online-app:
     build:
       context: .
@@ -9,6 +17,7 @@ services:
     env_file:
       - .env
     environment:
+      PUPPETEER_WS_ENDPOINT: ws://puppeteer:3000
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       SESSION_SECRET: ${SESSION_SECRET}
