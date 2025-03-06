@@ -4,6 +4,7 @@ import {repo} from "@/database/repo";
 import type {ScheduleItemCombined} from "@/models";
 import {transliterate} from "@/lib/transliterate";
 import {lpad} from "@/lib/lpad";
+import {monthFormatterGenitive} from "@/lib/common";
 
 
 function processTemplate(template: string, data: Record<string, any>): string {
@@ -14,10 +15,7 @@ function processTemplate(template: string, data: Record<string, any>): string {
 
 const defaultReplacer = '________________'
 
-const monthFormatter = (date:Date)=>{
-  const  m = date.getMonth()
-  return ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'][m]
-}
+
 
 
 async function prepareData(data: ScheduleItemCombined){
@@ -49,10 +47,10 @@ async function prepareData(data: ScheduleItemCombined){
     contractNum: office.lastContractNumber,
     contractDay: contractDate.getDate(),
     contractMonthNum: contractDate.getMonth() + 1,
-    contractMonth: monthFormatter(contractDate),
+    contractMonth: monthFormatterGenitive(contractDate),
     contractYear: contractDate.getFullYear(),
     todayDay: today.getDate(),
-    todayMonth: monthFormatter(today),
+    todayMonth: monthFormatterGenitive(today),
     todayYear: today.getFullYear(),
     signatory: office.signatory || defaultReplacer,
     signatoryGenitive: office.signatoryGenitive || defaultReplacer,

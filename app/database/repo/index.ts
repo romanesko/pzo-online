@@ -7,6 +7,7 @@ import {logRepo} from "@/database/repo/log";
 import {servicesRepo} from "@/database/repo/services";
 import {documentsRepo} from "@/database/repo/documents";
 import {settingsRepo} from "@/database/repo/settings";
+import {reportsRepo} from "@/database/repo/reports";
 
 
 export const repo = {
@@ -18,7 +19,8 @@ export const repo = {
   log: logRepo,
   services: servicesRepo,
   documents: documentsRepo,
-  settings: settingsRepo
+  settings: settingsRepo,
+  reports: reportsRepo
 }
 
 

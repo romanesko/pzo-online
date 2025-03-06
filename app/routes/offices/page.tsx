@@ -4,7 +4,7 @@ import type {Route} from "../+types/home";
 
 import {repo} from "@/database/repo";
 
-import {FormDataWrapper} from "@/lib/common";
+import {actionWrapper, FormDataWrapper} from "@/lib/common";
 import {addOffice, editOffice} from "./actions";
 
 import OfficesList from "@/routes/offices/components/OfficesList";
@@ -30,23 +30,7 @@ export async function action({
                                request,
                              }: Route.ActionArgs) {
 
-  let fd = new FormDataWrapper(await request.formData());
-
-  const action = fd.requireString('action')
-
-  switch (action) {
-    case 'addOffice':
-      await addOffice(fd)
-      break;
-    case 'editOffice':
-      await editOffice(fd)
-      break;
-    default:
-      throw new Error('unknown action')
-  }
-
-
-  return {'created': 'ok', error: null};
+  return actionWrapper(request, {addOffice, editOffice})
 }
 
 

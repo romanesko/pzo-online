@@ -5,6 +5,7 @@ import {session} from "@/lib/SessionStorage";
 
 
 export async function addOffice(fd: FormDataWrapper, request: Request) {
+
   await session.userRequireRole(request, ['ADMIN'])
   const office = formDataToModel<Office>(fd, officeFields)
   await repo.offices.add(office);

@@ -12,7 +12,7 @@ import {
 	unique,
 	uniqueIndex
 } from "drizzle-orm/pg-core"
-import {relations, sql} from "drizzle-orm"
+import {relations, type SQL, sql} from "drizzle-orm"
 
 export const bookingState = pgEnum("bookingState", ['pending', 'confirmed', 'canceled'])
 export const roles = pgEnum("roles", ['ADMIN', 'OPERATOR', 'SUPEROPERATOR'])
@@ -109,6 +109,11 @@ export const schedule = pgTable("schedule", {
 	endTime: text().notNull(),
 	duration: integer().notNull(),
 	officeId: integer().notNull(),
+	year: integer('year').generatedAlwaysAs(
+			(): SQL => sql`CAST(SUBSTRING(${schedule.date} FROM 1 FOR 4) AS INTEGER)`),
+	month: integer('month').generatedAlwaysAs(
+			(): SQL => sql`CAST(SUBSTRING(${schedule.date} FROM 6 FOR 2) AS INTEGER)`),
+
 }, (table) => [
 	index("office_date_idx").using("btree", table.officeId.asc().nullsLast().op("int4_ops"), table.date.asc().nullsLast()),
 	unique("unique_sched").on(table.date, table.startTime, table.officeId),

@@ -12,7 +12,9 @@ export default function RootLayout({loaderData}: {loaderData: any}) {
 
   return (
       <>
-        <HeaderMenu roles={loaderData.roles}/>
+        <span className={"no-print"}>
+        <HeaderMenu roles={loaderData.roles} />
+          </span>
         <Outlet />
       </>
   );

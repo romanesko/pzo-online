@@ -18,6 +18,7 @@ const links = [
       {link: '/users', label: 'Пользователи системы', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
       {link: '/templates', label: 'Шаблоны документов', roles: new Set(['ADMIN'])},
       {link: '/services', label: 'Услуги', roles: new Set(['ADMIN'])},
+      {link: '/reports', label: 'Отчёты', roles: new Set(['ADMIN'])},
       {link: '/settings', label: 'Настройки', roles: new Set(['ADMIN'])},
       {link: '/log', label: 'Лог действий', roles: new Set(['ADMIN'])},
 

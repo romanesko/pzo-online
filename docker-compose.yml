@@ -1,17 +1,7 @@
 services:
-  puppeteer:
-    image: browserless/chrome:latest
-    restart: unless-stopped
-    shm_size: '1gb'
-    environment:
-      - "CONNECTION_TIMEOUT=300000"
-    ports:
-      - "3010:3000"
   pzo-online-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    shm_size: '1gb'
+    image: savarez/pzo-online:latest
+    restart: unless-stopped
     ports:
       - "3999:3000"
     env_file:
@@ -19,6 +9,36 @@ services:
     environment:
       PUPPETEER_WS_ENDPOINT: ws://puppeteer:3000
       NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
-      SESSION_SECRET: ${SESSION_SECRET}
-#      DEBUG: puppeteer:*
+    depends_on:
+      database:
+        condition: service_healthy
+  puppeteer:
+    image: browserless/chrome:latest
+    restart: unless-stopped
+    shm_size: '1gb'
+    environment:
+      - "CONNECTION_TIMEOUT=300000"
+  database:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./init_extensions.sql:/docker-entrypoint-initdb.d/init_extensions.sql
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    command: >
+      sh -c "
+        docker-entrypoint.sh postgres &
+        until pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\"; do
+          sleep 1
+        done
+        psql -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" -c 'CREATE EXTENSION IF NOT EXISTS pg_trgm;'
+        wait
+      "

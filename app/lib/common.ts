@@ -195,3 +195,19 @@ export function formatCurrency(number: number): string {
     return part.value;
   }).join('');
 }
+
+
+export const monthFormatterGenitive = (date:Date)=>{
+  const  m = date.getMonth()
+  return ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'][m]
+}
+
+export const monthFormatterNominative = (date:Date | number)=>{
+  let m = 0;
+  if(typeof date == 'number'){
+    m = date-1
+  } else {
+    m = date.getMonth()
+  }
+  return ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'][m]
+}

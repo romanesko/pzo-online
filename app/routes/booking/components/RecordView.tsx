@@ -40,7 +40,9 @@ export default function RecordView({slot}: RecordViewParams) {
   }
 
   function handleCancelClick() {
-    processAction(fetcher, 'cancel', {bookingId: slot.booking!.id})
+    if(confirm('Точно отменить запись? Операция необратима')) {
+      processAction(fetcher, 'cancel', {bookingId: slot.booking!.id})
+    }
   }
 
   async function handleConfirmClick() {

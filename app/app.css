@@ -14,5 +14,9 @@ body {
   }
 }
 
-
+@media print {
+  .no-print {
+    display: none; /* Hides the element completely in print */
+  }
+}
 
