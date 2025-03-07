@@ -60,9 +60,6 @@ export async function loader({request,params}: Route.LoaderArgs) {
 
   }
 
-
-  console.log(datesMap)
-
   const dates = Object.keys(datesMap)
   const today = new Date()
   return {office, datesMap, dates,serviceKeys,serviceMap, totalsByService,  year, month,today}
@@ -91,7 +88,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
         <Table.Tr>
           <Table.Th>Дата</Table.Th>
           {serviceKeys.map((key,i)=><Table.Th ta={"center"} key={i}>{serviceMap[key]}</Table.Th>)}
-          <Table.Th ta={"center"}>Обследований</Table.Th>
+          <Table.Th ta={"center"}>Всего обследований</Table.Th>
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
