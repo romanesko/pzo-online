@@ -19,12 +19,11 @@ services:
     environment:
       - "CONNECTION_TIMEOUT=300000"
   database:
-    image: postgres
+    image: postgres:17.4-alpine
     restart: always
     shm_size: 128mb
     volumes:
       - ./pgdata:/var/lib/postgresql/data
-      - ./init_extensions.sql:/docker-entrypoint-initdb.d/init_extensions.sql
     env_file:
       - .env
     healthcheck:
@@ -32,7 +31,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 5s
+      start_period: 10s
     command: >
       sh -c "
         docker-entrypoint.sh postgres &
