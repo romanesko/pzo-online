@@ -37,7 +37,10 @@ async function saveUserSession(session: any) {
 async function getUserId(request: Request) {
   const session = await getUserSession(request);
   const userId = session.get("userId");
-  if (!userId) return null;
+  if (!userId) {
+    console.log("no userId in session");
+    return null
+  }
   return userId;
 }
 

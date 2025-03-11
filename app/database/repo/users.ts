@@ -5,7 +5,7 @@ import {db} from "../drizzle";
 import {users} from "../schema";
 
 
-function encryptPassword(password: string) {
+export function encryptPassword(password: string) {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
 
@@ -48,7 +48,10 @@ export const usersRepo = {
       console.log('user not found')
       return null
     }
+
+
     if (user.password != encryptPassword(password)) {
+    // if (user.password != password) {
       console.log('invalid password')
       return null
     }
@@ -98,7 +101,7 @@ export const usersRepo = {
 
   changePassword(userId: number, password: string) {
     assert(password, 'password is required')
-    return db.update(users).set({password: password}).where(eq(users.id, userId))
+    return db.update(users).set({password: encryptPassword(password)}).where(eq(users.id, userId))
   },
 
 }

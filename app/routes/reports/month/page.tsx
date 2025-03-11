@@ -12,7 +12,7 @@ interface ReportItem{
 }
 
 export async function loader({request,params}: Route.LoaderArgs) {
-  await session.userRequireRole(request, ['ADMIN'])
+  await session.userRequireRole(request, ['ADMIN','SUPEROPERATOR'])
   const offices = await repo.offices.getAll()
 
   const officeId = +params.officeId!
