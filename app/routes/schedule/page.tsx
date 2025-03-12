@@ -91,7 +91,9 @@ export default function SchedulePage({loaderData}: Route.ComponentProps) {
 function getPreviousMonday(date: Date) {
   const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
   const daysToSubtract = dayOfWeek === 1 ? 0 : (dayOfWeek === 0 ? 6 : dayOfWeek - 1);
-  const previousMonday = new Date();
+  const previousMonday = new Date(date); // Create a copy of the input date
   previousMonday.setDate(date.getDate() - daysToSubtract);
-  return previousMonday
+  return previousMonday;
 }
+
+
