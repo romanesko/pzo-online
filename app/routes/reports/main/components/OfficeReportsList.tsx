@@ -17,6 +17,7 @@ export default function OfficeReportsList({officeId,years}: { years: { [key: num
         <Stack key={year}>
           <Title order={1}>{year}</Title>
           <Table striped highlightOnHover withTableBorder withColumnBorders>
+            <Table.Tbody>
             <Table.Tr >
               <Table.Th>месяц</Table.Th>
               <Table.Th colSpan={3} ta={"center"}>посетили / записано</Table.Th>
@@ -38,9 +39,10 @@ export default function OfficeReportsList({officeId,years}: { years: { [key: num
                 <Text size={"sm"} c={"dimmed"}>{Math.round(visited/((visited+unvisited)||1)*100)}%</Text>
               </Table.Td>
 
-              <Table.Td ta={"center"}><Button component={Link} to={`/reports/${officeId}/${year}-${lpad(month)}`} size={"xs"}>детальный отчёт</Button></Table.Td>
+              <Table.Td ta={"center"}><Button component={Link} to={`/reports/main/${officeId}/${year}-${lpad(month)}`} size={"xs"}>детальный отчёт</Button></Table.Td>
             </Table.Tr>
           )}
+            </Table.Tbody>
           </Table>
 
 

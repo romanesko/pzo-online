@@ -1,9 +1,9 @@
 import {Container, Tabs} from "@mantine/core";
-import type {Route} from "@/types/routes/reports/+types/page";
+import type {Route} from "@/types/routes/reports/main/+types/page";
 import {session} from "@/lib/SessionStorage";
 import {useNavigate} from "react-router";
 import {repo} from "@/database/repo";
-import OfficeReportsList from "@/routes/reports/components/OfficeReportsList";
+import OfficeReportsList from "@/routes/reports/main/components/OfficeReportsList";
 import {useMemo} from "react";
 
 
@@ -47,7 +47,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
 
 
   return <Container py={20}>
-    <Tabs value={officeId} onChange={(value) => navigate(`/reports/${value}`)}>
+    <Tabs value={officeId} onChange={(value) => navigate(`/reports/main/${value}`)}>
       <Tabs.List>
         {offices.map((office, i) => (
             <Tabs.Tab key={i} value={office.id.toString()}>

@@ -24,7 +24,10 @@ export default function WeekDay({num, date, width, officeId}: {
   const [popoverOpened, setPopoverOpened] = useState(false)
   const [modalOpened, {open, close}] = useDisclosure(false);
   let tdInit = new Date(date)
+
+
   tdInit.setDate(tdInit.getDate() + 1)
+
   const [targetDate, setTargetDate] = useState(tdInit)
 
   const fetcher = useFetcher()
@@ -56,19 +59,23 @@ export default function WeekDay({num, date, width, officeId}: {
 
   }, [fetcher.state, fetcher.data]);
 
-  function handleCopyClick() {
+  function handleCopyClick(date:string) {
+    const d = new Date(date)
+    d.setDate(d.getDate() + 1)
+    setTargetDate(d)
     setPopoverOpened(false)
-
     open()
   }
 
 
   function renderModal() {
     return <Modal opened={modalOpened} onClose={close} title="Скопировать расписание">
+
       <Group justify="center">
         <Text size={"sm"}>расписание <span style={{fontWeight: 'bold'}}>{formatDateFull(date)}</span> будет скопировано
           в</Text>
         <Calendar
+            date={targetDate}
             firstDayOfWeek={1} withCellSpacing={false} getDayProps={(date) => ({
           selected: isDateMatch(date, targetDate),
           onClick: () => setTargetDate(date),
@@ -107,7 +114,7 @@ export default function WeekDay({num, date, width, officeId}: {
       <ActionIcon
           variant="subtle"
           aria-label="Copy"
-          onClick={handleCopyClick}
+          onClick={()=>handleCopyClick(date)}
           loading={fetcher.state !== 'idle'}
           size={"sm"}>
         <IconCopy style={{width: '70%', height: '70%'}} stroke={1.5}/>

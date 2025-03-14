@@ -1,5 +1,5 @@
 import {Container, Table, Title, Text, Group, Button} from "@mantine/core";
-import type {Route} from "@/types/routes/reports/month/+types/page";
+import type {Route} from "@/types/routes/reports/main/month/+types/page";
 import {session} from "@/lib/SessionStorage";
 import {repo} from "@/database/repo";
 import React from "react";

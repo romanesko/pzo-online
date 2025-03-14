@@ -7,6 +7,16 @@ import {useFetcher} from "react-router";
 import React from "react";
 
 
+const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false, // Use 24-hour format
+});
+
 export async function loader({request, params}: Route.LoaderArgs) {
   await session.userRequireRole(request, 'ADMIN')
 
@@ -14,7 +24,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
   const filter = url.searchParams.get('filter')
   const userId = url.searchParams.get('user')
 
-  const logs = await repo.log.getLatest(filter,userId?+userId:null,100)
+  const logs = await repo.log.getLatest(filter,userId?+userId:null,200)
 
   const users = await repo.users.getAll()
 
@@ -62,14 +72,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
         <Table.Tbody>
           {logs.map(({users:user,log}) => (
               <Table.Tr key={log.id}>
-                <Table.Td style={{whiteSpace: 'nowrap'}}>{new Date(log.createdAt).toLocaleDateString('ru-RU', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                })}</Table.Td>
+                <Table.Td style={{whiteSpace: 'nowrap'}}>{formattedDate.format(log.createdAt)}</Table.Td>
                 <Table.Td>{user.name}</Table.Td>
                 <Table.Td>{parseAndReplace(log.action)}</Table.Td>
               </Table.Tr>

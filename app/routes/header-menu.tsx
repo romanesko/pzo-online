@@ -18,12 +18,19 @@ const links = [
       {link: '/users', label: 'Пользователи системы', roles: new Set( ['ADMIN','SUPEROPERATOR'])},
       {link: '/templates', label: 'Шаблоны документов', roles: new Set(['ADMIN'])},
       {link: '/services', label: 'Услуги', roles: new Set(['ADMIN'])},
-      {link: '/reports', label: 'Отчёты', roles: new Set(['ADMIN','SUPEROPERATOR'])},
+
+      {link: '/reports/records', label: 'Отчёты: по записям', roles: new Set(['ADMIN','SUPEROPERATOR']),},
       {link: '/settings', label: 'Настройки', roles: new Set(['ADMIN'])},
       {link: '/log', label: 'Лог действий', roles: new Set(['ADMIN'])},
 
     ]
+  },{link: '', label: 'Отчёты', roles: new Set(['ADMIN','SUPEROPERATOR']),
+    links: [
+      {link: '/reports/main', label: 'Общий', roles: new Set(['ADMIN','SUPEROPERATOR'])},
+      {link: '/reports/records', label: 'По записям', roles: new Set(['ADMIN','SUPEROPERATOR'])},
+    ]
   },
+
 
 ] as any[];
 
@@ -93,7 +100,8 @@ export default function HeaderMenu({roles}: { roles: string[] }) {
   const items = links.map((link) => {
     const menuItems = link.links?.filter((link:any)=>isAllowed(roles,link.roles)).map((item: any) => (
         <Box key={item.link} py={4} px={2}>
-          <RenderLink item={item} roles={roles} key={item.link} close={close}/>
+          {item.links && item.links.length > 0 ? <div>sub</div> :  <RenderLink item={item} roles={roles} key={item.link} close={close}/>
+          }
 
         </Box>
     ));

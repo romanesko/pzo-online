@@ -67,16 +67,24 @@ export const logRepo = {
   },
 
 
-  async getLatest(filter: string | null, userId: number | null,number: number) {
+  async getLatest(filter: string | null, userId: number | null,limit: number) : Promise<{
+    users: any,
+    log: any
+  }[]> {
 
-
+    const userOffsetMinutes = new Date().getTimezoneOffset(); // Offset in minutes (e.g., -180 for UTC+3)
 
     return db.select().from(log).innerJoin(users, eq(log.userId, users.id))
         .where(and(
             userId ? eq(log.userId, userId) : ne(log.userId, 0),
             like(lower(log.action), `%${filter||''}%`.toLowerCase())))
 
-        .orderBy(desc(log.id)).limit(number)
+        .orderBy(desc(log.id)).limit(limit).then(res=>res.map(res=>{
+          const locDate = new Date(new Date(res.log.createdAt).getTime() - userOffsetMinutes * 60 * 1000);
+          // @ts-ignore
+          res.log.createdAt = locDate
+          return res
+        }))
   }
 }
 

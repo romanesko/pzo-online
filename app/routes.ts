@@ -30,7 +30,8 @@ export default [
     route('records/:officeId?', 'routes/records/page.tsx'),
     route('settings', 'routes/settings/page.tsx'),
     route('services', 'routes/services/page.tsx'),
-    route('reports/:officeId?', 'routes/reports/page.tsx'),
-    route('reports/:officeId/:date', 'routes/reports/month/page.tsx'),
+    route('reports/main/:officeId?', 'routes/reports/main/page.tsx'),
+    route('reports/main/:officeId/:date', 'routes/reports/main/month/page.tsx'),
+    route('reports/records', 'routes/reports/records/page.tsx'),
   ]),
 ] satisfies RouteConfig;

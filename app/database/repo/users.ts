@@ -49,6 +49,10 @@ export const usersRepo = {
       return null
     }
 
+    if(!user.isActive){
+      console.log('user not active')
+      return null
+    }
 
     if (user.password != encryptPassword(password)) {
     // if (user.password != password) {
