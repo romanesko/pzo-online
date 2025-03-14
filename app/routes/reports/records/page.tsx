@@ -138,11 +138,9 @@ export default function Page({loaderData}: Route.ComponentProps) {
       fieldSeparator: ',',
       quoteStrings: true,
       decimalSeparator: '.',
-      useKeysAsHeaders: false,
-      filename: `${startDate}_${endDate}.csv`,
+      useKeysAsHeaders: true,
+      filename: `${startDate}_${endDate}`,
       showColumnHeaders:true,
-      columnHeaders: headerRow
-
     });
 
     bodyRows.push(footerRow)
