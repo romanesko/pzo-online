@@ -67,8 +67,10 @@ export const reportsRepo = {
   getActivityReport(from: Date, to: Date): Promise<{id: number, createdAt: string, action: string, parsedAction: { [key: string]: { id: any, label: string } } }[]> {
 
     const startDate =  formatDate(from)
-    to.setDate(to.getDate() + 1);
-    const endDate = formatDate(to)
+
+    const toDateFixed =new Date(to)
+    toDateFixed.setDate(toDateFixed.getDate() + 1);
+    const endDate = formatDate(toDateFixed)
 
     console.log('GET ACTIVITY REPORT', startDate, endDate)
 

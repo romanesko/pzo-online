@@ -7,8 +7,8 @@ import {useNavigate} from "react-router";
 import {alertError} from "@/lib/notify";
 
 export interface RangeCalendarProps {
-   firstDate: Date,
-    lastDate: Date
+   firstDate: string,
+   lastDate: string
 }
 
 function rangeDateFormat(date: string | Date | null){

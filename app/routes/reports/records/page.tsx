@@ -26,8 +26,8 @@ export async function loader({request, params}: Route.LoaderArgs) {
 
   let year = new Date().getFullYear();
   let month = new Date().getMonth() + 1;
-  let startDate = new Date(year, month - 1, 1)
-  let endDate = new Date(year, month, 0)
+  let startDate =new Date(Date.UTC(year, month - 1, 1));
+  let endDate = new Date(Date.UTC(year, month, -1))
 
 
   let url = new URL(request.url);
@@ -35,7 +35,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
   let toStr = url.searchParams.get("to");
 
   if (fromStr) {
-    const from = new Date(fromStr);
+    const from = new Date(fromStr + 'Z');
     if (isNaN(from.getTime())) {
       throw new Error('invalid from date')
     }
@@ -43,12 +43,14 @@ export async function loader({request, params}: Route.LoaderArgs) {
   }
 
   if (toStr) {
-    const to = new Date(toStr);
+    const to = new Date(toStr + 'Z');
     if (isNaN(to.getTime())) {
       throw new Error('invalid to date')
     }
     endDate = to;
   }
+
+
 
   const currentDate = new Date(startDate);
 
@@ -63,8 +65,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
     currentDate.setDate(currentDate.getDate() + 1); // Increment the date by 1
   }
 
-  console.log(dates)
-  var records = await repo.reports.getActivityReport(startDate, endDate)
+  const records = await repo.reports.getActivityReport(startDate, endDate)
 
 
   const group = {} as { [key: number]: { [key: string]: { date: string, add: number, cancel: number } } }
@@ -96,7 +97,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
     }
   }
 
-  const tableData = []
+
 
   const headerRow = ['Дата']
   for (let office of offices) {
@@ -121,7 +122,7 @@ export async function loader({request, params}: Route.LoaderArgs) {
   }
 
 
-  return {offices, dates, startDate, endDate, headerRow, bodyRows, footerRow}
+  return {offices, dates, startDate: formatDate(startDate), endDate: formatDate(endDate), headerRow, bodyRows, footerRow}
 }
 
 export default function Page({loaderData}: Route.ComponentProps) {
@@ -138,7 +139,7 @@ export default function Page({loaderData}: Route.ComponentProps) {
       quoteStrings: true,
       decimalSeparator: '.',
       useKeysAsHeaders: false,
-      filename: `${formatDate(startDate)}_${formatDate(endDate)}.csv`,
+      filename: `${startDate}_${endDate}.csv`,
       showColumnHeaders:true,
       columnHeaders: headerRow
 
@@ -160,6 +161,8 @@ export default function Page({loaderData}: Route.ComponentProps) {
     <Stack>
 
       <Group justify="space-between">
+
+
         <RangeCalendar firstDate={startDate} lastDate={endDate}/>
         <ActionIcon variant="transparent"  onClick={()=>handleDownloadClick()}>
           <IconDownload size={16}/>
